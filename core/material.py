@@ -6,11 +6,12 @@ from pymediainfo import MediaInfo
 class Material:
     media_type_mapping = {
         "video": "video",
-        "audio": "music"
+        "audio": "music",
+        "image": "photo",
     }
 
     def __init__(self, file_full_name_or_text):
-        self._data = template.material()
+        self._data = template.get_material()
         self.material_type = ''
         self.track_type = ''
         self.width = 0
@@ -54,7 +55,7 @@ class Material:
     def data(self, value):
         self._data = value
 
-    def load_property_from_file(self, file_path):
+    def load_property_from_file(self, file_path, *kwargs):
         """
         通过文件的方式去加载为素材
         """
@@ -62,10 +63,18 @@ class Material:
 
         self.track_type = media_info['track_type'].lower()
         self.material_type = self.media_type_mapping[self.track_type]
+
         if "width" in media_info:
             self.width = media_info['width']
             self.height = media_info['height']
-        self.duration = media_info['duration'] * 1000
+        pass
+
+        if "duration" in media_info:
+            self.duration = media_info['duration'] * 1000
+        else:
+            self.duration = kwargs.get("duration", 5000)
+        pass
+
         self.extra_info = file_path.split("/")[-1]
         self.file_Path = file_path
 
@@ -82,7 +91,7 @@ class Material:
         self.id = material['id']
 
     def gen_video(self):
-        v = template.video()
+        v = template.get_video()
         v["duration"] = self.duration
         v["height"] = self.height
         v["local_material_id"] = self.id
@@ -93,7 +102,7 @@ class Material:
         return v
 
     def gen_audio(self):
-        a = template.audio()
+        a = template.get_audio()
         a["duration"] = self.duration
         a["local_material_id"] = self.id
         a["name"] = self.extra_info
@@ -102,7 +111,7 @@ class Material:
         return a
 
     def gen_text(self):
-        t = template.text()
+        t = template.get_text()
         return t
 
     def change_color(self, color):

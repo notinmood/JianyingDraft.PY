@@ -17,23 +17,34 @@ from core.track import Tracks
 
 class Draft:
     drafts_root_folder = "Z:/jianying/Data/JianyingPro Drafts"
+
     template_folder = "./template/"
     draft_content_file = "draft_content.json"
     draft_meta_info_file = "draft_meta_info.json"
 
-    def __init__(self, name: str = "Test"):
+    def __init__(self, name: str = ""):
         # 路径变量
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            self.name = time.strftime("%Y%m%d%H%M%S", time.localtime())
+        pass
+
         self.draft_folder = os.path.join(self.drafts_root_folder, name)
         self.draft_content_path = os.path.join(self.draft_folder, self.draft_content_file)
         self.draft_meta_info_path = os.path.join(self.draft_folder, self.draft_meta_info_file)
+
         # 新建项目文件夹
         util.create_folder(self.draft_folder)
+
         # 读取草稿模板
-        self.draft_content_data = util.read_json(os.path.join(self.template_folder, self.draft_content_file))
-        self.draft_meta_info_data = util.read_json(os.path.join(self.template_folder, self.draft_meta_info_file))
+        here = os.path.abspath(os.path.dirname(__file__))
+        self.draft_content_data = util.read_json(os.path.join(here, self.template_folder, self.draft_content_file))
+        self.draft_meta_info_data = util.read_json(os.path.join(here, self.template_folder, self.draft_meta_info_file))
+
         # 初始化草稿内容信息
         self.draft_content_data['id'] = util.generate_id()
+
         # 初始化素材信息
         self.draft_meta_info_data['id'] = util.generate_id()
         self.draft_meta_info_data['draft_fold_path'] = self.draft_folder.replace("\\", '/')
@@ -42,9 +53,10 @@ class Draft:
         self.draft_meta_info_data['tm_draft_modified'] = time.time()
         self.draft_meta_info_data['draft_root_path'] = self.drafts_root_folder.replace("/", "\\")
         self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root_folder.split(':/')[0]
+
         # 创建变量
-        self.draft_materials: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材库
-        self.content_materials: list = self.draft_content_data['materials']  # 内容素材库
+        self.materials_in_draft_meta_info: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材库
+        self.materials_in_draft_content: list = self.draft_content_data['materials']  # 内容素材库
         self.tracks = Tracks()  # 轨道
         self.materials = {}
 
@@ -54,16 +66,16 @@ class Draft:
         1. 如果是文件路径先转化为DraftMaterial
         2. 如果是DraftMaterial类直接添加到素材库
         """
-        if type(media) == Material:
+        if isinstance(media, Material):
             self.materials[media.file_Path] = media
-            self.draft_materials.append(media.data)
+            self.materials_in_draft_meta_info.append(media.data)
             return media
         pass
 
         if media not in self.materials:
             m = Material(media)
             self.materials[media] = m
-            self.draft_materials.append(m.data)
+            self.materials_in_draft_meta_info.append(m.data)
             return m
         else:
             return self.materials[media]
@@ -73,17 +85,17 @@ class Draft:
         materials = {}
         extra_material_refs = []
         if material.material_type == 'video':
-            materials['speeds'] = template.speed()
-            materials['sound_channel_mappings'] = template.sound_channel_mapping()
-            materials['canvases'] = template.canvas()
+            materials['speeds'] = template.get_speed()
+            materials['sound_channel_mappings'] = template.get_sound_channel_mapping()
+            materials['canvases'] = template.get_canvas()
         elif material.material_type == 'photo':
             pass
         elif material.material_type == 'audio':
-            materials['speeds'] = template.speed()
-            materials['sound_channel_mappings'] = template.sound_channel_mapping()
-            materials['beats'] = template.sound_channel_mapping()
+            materials['speeds'] = template.get_speed()
+            materials['sound_channel_mappings'] = template.get_sound_channel_mapping()
+            materials['beats'] = template.get_sound_channel_mapping()
         elif material.material_type == 'text':
-            materials['material_animations'] = template.material_animation()
+            materials['material_animations'] = template.get_material_animation()
 
         materials[f'{material.track_type}s'] = material.content_material
 
@@ -98,7 +110,7 @@ class Draft:
             duration = media.duration
         pass
 
-        segment = template.segment()
+        segment = template.get_segment()
         track = []
 
         if isinstance(media, str):
@@ -124,7 +136,7 @@ class Draft:
 
         materials, extra_material_refs, material_id = self.gen_material_property(media)
         for key in materials:
-            self.content_materials[key].append(materials[key])
+            self.materials_in_draft_content[key].append(materials[key])
 
         segment['extra_material_refs'] = extra_material_refs
         segment['material_id'] = material_id

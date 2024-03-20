@@ -2,7 +2,7 @@ import time
 from core import util
 
 
-def canvas():
+def get_canvas():
     return {
         "album_image": "",
         "blur": 0.0,
@@ -17,7 +17,7 @@ def canvas():
     }
 
 
-def sound_channel_mapping():
+def get_sound_channel_mapping():
     return {
         "audio_channel_mapping": 0,
         "id": util.generate_id(),
@@ -26,7 +26,7 @@ def sound_channel_mapping():
     }
 
 
-def speed():
+def get_speed():
     return {
         "curve_speed": None,
         "id": util.generate_id(),
@@ -36,7 +36,7 @@ def speed():
     }
 
 
-def video():
+def get_video():
     return {
         "audio_fade": None,
         "cartoon_path": "",
@@ -104,7 +104,7 @@ def video():
     }
 
 
-def material():
+def get_material():
     return {
         "create_time": int(time.time()),
         "duration": 0,
@@ -123,7 +123,7 @@ def material():
     }
 
 
-def track():
+def get_track():
     return {
         "attribute": 0,
         "flag": 0,
@@ -133,7 +133,7 @@ def track():
     }
 
 
-def segment():
+def get_segment():
     return {
         "cartoon": False,
         "clip": {
@@ -174,7 +174,7 @@ def segment():
     }
 
 
-def beat():
+def get_beat():
     return {
         "ai_beats": {
             "beats_path": "",
@@ -193,7 +193,7 @@ def beat():
     }
 
 
-def audio():
+def get_audio():
     return {
         "app_id": 0,
         "category_id": "",
@@ -225,7 +225,7 @@ def audio():
     }
 
 
-def text():
+def get_text():
     return {
         "add_type": 0,
         "alignment": 1,
@@ -302,7 +302,7 @@ def text():
     }
 
 
-def material_animation():
+def get_material_animation():
     return {
         "animations": [],
         "id": util.generate_id(),

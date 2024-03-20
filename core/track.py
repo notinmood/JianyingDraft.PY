@@ -6,7 +6,7 @@ class Tracks:
     轨道信息
     """
 
-    def __init__(self) -> None:
+    def __init__(self):
         """
         初始化轨道类型
         """
@@ -80,7 +80,7 @@ class Tracks:
     def gen_track(tracks, track_type, track_index):
         track_len = len(tracks)
         if track_index == track_len:
-            track = template.track()
+            track = template.get_track()
             track['type'] = track_type
             if track_len:
                 track['flag'] = 2
