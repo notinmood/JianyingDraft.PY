@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "JianyingDraft.PY"
+version = "0.1.0"
+description = ""
+authors = ["解大劦 <develope@163.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pymediainfo = "^6.1.0"
+basiclibrary-py = "^0.6.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
