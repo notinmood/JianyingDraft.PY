@@ -21,7 +21,7 @@ def read_json(path):
         return json.load(file)
 
 
-def new_folder(folder_path):
+def create_folder(folder_path):
     if os.path.exists(folder_path):
         for filename in os.listdir(folder_path):
             file_path = os.path.join(folder_path, filename)

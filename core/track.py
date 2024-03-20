@@ -10,7 +10,6 @@ class Tracks:
         """
         初始化轨道类型
         """
-
         self.video_track = []
         self.audio_track = []
         self.text_track = []
@@ -25,54 +24,69 @@ class Tracks:
         Returns:
             dict: 返回轨道字典
         """
-        track = self._add_track(self.video_track, 'video', track_index)
+        track = self.gen_track(self.video_track, 'video', track_index)
         if track:
             self.video_track.append(track)
+        pass
+
         return self.video_track[track_index]
 
     def add_audio_track(self, track_index=0):
-        track = self._add_track(self.audio_track, 'audio', track_index)
+        track = self.gen_track(self.audio_track, 'audio', track_index)
         if track:
             # 当视频轨道为空时
             if len(self.video_track) == 0:
                 self.add_video_track()
+            pass
+
             self.audio_track.append(track)
+        pass
+
         return self.audio_track[track_index]
 
     def add_text_track(self, track_index=0):
-        track = self._add_track(self.text_track, 'text', track_index)
+        track = self.gen_track(self.text_track, 'text', track_index)
         if track:
             # 当视频轨道为空时
             if len(self.video_track) == 0:
                 self.add_video_track()
+            pass
+
             self.text_track.append(track)
+        pass
+
         return self.text_track[track_index]
 
-    def _add_track(self, tracks, track_type, track_index):
+    def add_segment(self, material_type, segment, track_index):
+        if material_type == "video":
+            self.video_track[track_index]['segments'].append(segment)
+        elif material_type == "music":
+            self.audio_track[track_index]['segments'].append(segment)
+        elif material_type == "text":
+            self.text_track[track_index]['segments'].append(segment)
+
+    def composite(self):
+        """
+        将所有轨道合成为一个列表
+        """
+        tracks = []
+        tracks.extend(self.video_track)
+        tracks.extend(self.text_track)
+        tracks.extend(self.audio_track)
+
+        return tracks
+
+    @staticmethod
+    def gen_track(tracks, track_type, track_index):
         track_len = len(tracks)
         if track_index == track_len:
             track = template.track()
             track['type'] = track_type
             if track_len:
                 track['flag'] = 2
+            pass
+
             return track
         else:
             return False
-
-    def to_track(self, metetype, segment, track_index):
-        if metetype == "video":
-            self.video_track[track_index]['segments'].append(segment)
-        elif metetype == "music":
-            self.audio_track[track_index]['segments'].append(segment)
-        elif metetype == "text":
-            self.text_track[track_index]['segments'].append(segment)
-
-    def _composite(self):
-        """
-        将所有轨道合成为一个列表
-        """
-        track = []
-        track.extend(self.video_track)
-        track.extend(self.text_track)
-        track.extend(self.audio_track)
-        return track
+        pass

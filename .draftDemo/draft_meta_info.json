@@ -1,0 +1,141 @@
+{
+    "cloud_package_completed_time": "",
+    "draft_cloud_capcut_purchase_info": "",
+    "draft_cloud_last_action_download": false,
+    "draft_cloud_materials": [],
+    "draft_cloud_purchase_info": "",
+    "draft_cloud_template_id": "",
+    "draft_cloud_tutorial_info": "",
+    "draft_cloud_videocut_purchase_info": "",
+    "draft_cover": "draft_cover.jpg",
+    "draft_deeplink_url": "",
+    "draft_enterprise_info": {
+        "draft_enterprise_extra": "",
+        "draft_enterprise_id": "",
+        "draft_enterprise_name": "",
+        "enterprise_material": []
+    },
+    "draft_fold_path": "Z:/jianying/Data/JianyingPro Drafts/仿写央视",
+    "draft_id": "795C7D69-33EE-47a3-84E5-B17400AB5692",
+    "draft_is_ai_packaging_used": false,
+    "draft_is_ai_shorts": false,
+    "draft_is_ai_translate": false,
+    "draft_is_article_video_draft": false,
+    "draft_is_from_deeplink": "false",
+    "draft_is_invisible": false,
+    "draft_materials": [
+        {
+            "type": 0,
+            "value": [
+                {
+                    "create_time": 1708838479,
+                    "duration": 5000000,
+                    "extra_info": "2024_02_25_13_21_19_67_跟着央视练文笔_坚持每天仿写练习写作提升_1.png",
+                    "file_Path": "Z:/mm/2024_02_25_13_21_19_67_跟着央视练文笔_坚持每天仿写练习写作提升_1.png",
+                    "height": 1660,
+                    "id": "d9bc5a66-1ed9-41d2-87a7-a353524ffd19",
+                    "import_time": 1710300281,
+                    "import_time_ms": 1710300280391470,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "photo",
+                    "roughcut_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 0,
+                    "width": 1242
+                }
+            ]
+        },
+        {
+            "type": 1,
+            "value": []
+        },
+        {
+            "type": 2,
+            "value": []
+        },
+        {
+            "type": 3,
+            "value": []
+        },
+        {
+            "type": 6,
+            "value": []
+        },
+        {
+            "type": 7,
+            "value": []
+        },
+        {
+            "type": 8,
+            "value": [
+                {
+                    "create_time": 0,
+                    "duration": 0,
+                    "extra_info": "{\n  \"musicPanelType\": \"musictype_audio\",\n  \"resouceType\": \"Platform_SongLib\",\n  \"resourceID\": \"7087077268468303909\",\n  \"signHeader\": false,\n  \"url\": \"https://lf3-lv-music-tos.faceu.com/obj/tos-cn-ve-2774/osnMAib4HppKjefty6OBCrDmDgoArQSgZJCbxo\"\n}",
+                    "file_Path": "C:/Users/解大力/AppData/Local/JianyingPro/User Data/Cache/music/1f6749e9ddb0682bfc854e63596edcde.mp3",
+                    "height": 0,
+                    "id": "0A32BF11-5BF7-4cec-AF3C-6FA5ECA0ACA3",
+                    "import_time": 1710300428,
+                    "import_time_ms": -1,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "none",
+                    "roughcut_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 8,
+                    "width": 0
+                },
+                {
+                    "create_time": 0,
+                    "duration": 0,
+                    "extra_info": "{\n  \"musicPanelType\": \"musictype_audio\",\n  \"resouceType\": \"Platform_SongLib\",\n  \"resourceID\": \"7087077268468303909\",\n  \"signHeader\": true,\n  \"url\": \"https://lf6-lv-music-tos.faceu.com/obj/tos-cn-v-2774c002/3894ef45498d4393b930067ea224701f\"\n}",
+                    "file_Path": "C:/Users/解大力/AppData/Local/JianyingPro/User Data/Cache/music/1ab1973db0fb6be788743c64224ced96.beat",
+                    "height": 0,
+                    "id": "1991B645-8A1C-4512-883F-6B2FACA04085",
+                    "import_time": 1710300428,
+                    "import_time_ms": -1,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "none",
+                    "roughcut_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 8,
+                    "width": 0
+                }
+            ]
+        }
+    ],
+    "draft_materials_copied_info": [],
+    "draft_name": "仿写央视",
+    "draft_new_version": "",
+    "draft_removable_storage_device": "Z:",
+    "draft_root_path": "Z:\\jianying\\Data\\JianyingPro Drafts",
+    "draft_segment_extra_info": [],
+    "draft_timeline_materials_size_": 1146423,
+    "draft_type": "",
+    "tm_draft_cloud_completed": "",
+    "tm_draft_cloud_modified": 0,
+    "tm_draft_create": 1710300238044323,
+    "tm_draft_modified": 1710300542634473,
+    "tm_draft_removed": 0,
+    "tm_duration": 10000000
+}
