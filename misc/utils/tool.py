@@ -8,7 +8,7 @@
 """
 import time
 
-from .util import *
+from util import *
 
 
 def tracks():

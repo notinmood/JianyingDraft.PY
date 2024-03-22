@@ -55,7 +55,7 @@ class Material:
     def data(self, value):
         self._data = value
 
-    def load_property_from_file(self, file_path, *kwargs):
+    def load_property_from_file(self, file_path, **kwargs):
         """
         通过文件的方式去加载为素材
         """
@@ -111,6 +111,7 @@ class Material:
         return a
 
     def gen_text(self):
+        _self = self
         t = template.get_text()
         return t
 

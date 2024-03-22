@@ -58,12 +58,16 @@ class Tracks:
         return self.text_track[track_index]
 
     def add_segment(self, material_type, segment, track_index):
+        target_track = None
         if material_type == "video":
-            self.video_track[track_index]['segments'].append(segment)
+            target_track = self.video_track[track_index]
         elif material_type == "music":
-            self.audio_track[track_index]['segments'].append(segment)
+            target_track = self.audio_track[track_index]
         elif material_type == "text":
-            self.text_track[track_index]['segments'].append(segment)
+            target_track = self.text_track[track_index]
+        pass
+
+        target_track['segments'].append(segment)
 
     def composite(self):
         """
@@ -76,8 +80,9 @@ class Tracks:
 
         return tracks
 
-    @staticmethod
-    def gen_track(tracks, track_type, track_index):
+    def gen_track(self, tracks, track_type, track_index):
+        _self = self
+
         track_len = len(tracks)
         if track_index == track_len:
             track = template.get_track()

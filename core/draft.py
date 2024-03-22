@@ -9,14 +9,17 @@
 
 import os
 import time
+
+from BasicLibrary.configHelper import ConfigHelper
+
 from core import util
 from core import template
 from core.material import Material
-from core.track import Tracks
+from core.tracks import Tracks
 
 
 class Draft:
-    drafts_root_folder = "Z:/jianying/Data/JianyingPro Drafts"
+    drafts_root_folder = ConfigHelper.get_item("basic", "drafts_root_folder")
 
     template_folder = "./template/"
     draft_content_file = "draft_content.json"
@@ -24,10 +27,8 @@ class Draft:
 
     def __init__(self, name: str = ""):
         # 路径变量
-        if name:
-            self.name = name
-        else:
-            self.name = time.strftime("%Y%m%d%H%M%S", time.localtime())
+        if not name:
+            name = time.strftime("%Y%m%d.%H%M%S", time.localtime())
         pass
 
         self.draft_folder = os.path.join(self.drafts_root_folder, name)
@@ -60,28 +61,30 @@ class Draft:
         self.tracks = Tracks()  # 轨道
         self.materials = {}
 
-    def add_media_to_materials(self, media):
-        """
-        添加媒体信息到素材库：
-        1. 如果是文件路径先转化为DraftMaterial
-        2. 如果是DraftMaterial类直接添加到素材库
-        """
-        if isinstance(media, Material):
-            self.materials[media.file_Path] = media
-            self.materials_in_draft_meta_info.append(media.data)
-            return media
-        pass
-
-        if media not in self.materials:
-            m = Material(media)
-            self.materials[media] = m
-            self.materials_in_draft_meta_info.append(m.data)
-            return m
-        else:
-            return self.materials[media]
-        pass
+    # def add_media_to_materials(self, media):
+    #     """
+    #     添加媒体信息到素材库：
+    #     1. 如果是文件路径先转化为DraftMaterial
+    #     2. 如果是DraftMaterial类直接添加到素材库
+    #     """
+    #     if isinstance(media, Material):
+    #         self.materials[media.file_Path] = media
+    #         self.materials_in_draft_meta_info.append(media.data)
+    #         return media
+    #     pass
+    #
+    #     if media not in self.materials:
+    #         m = Material(media)
+    #         self.materials[media] = m
+    #         self.materials_in_draft_meta_info.append(m.data)
+    #         return m
+    #     else:
+    #         return self.materials[media]
+    #     pass
 
     def gen_material_property(self, material: Material):
+        _self = self
+
         materials = {}
         extra_material_refs = []
         if material.material_type == 'video':
@@ -105,7 +108,7 @@ class Draft:
 
         return materials, extra_material_refs, material.content_material['id']
 
-    def add_media_to_track(self, media, start=0, duration=0, index=0):
+    def add_media_to_track(self, media: str | Material, start=0, duration=0, index=0):
         if duration == 0:
             duration = media.duration
         pass

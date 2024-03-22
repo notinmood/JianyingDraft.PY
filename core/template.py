@@ -115,7 +115,7 @@ def get_material():
         "import_time": int(time.time()),
         "import_time_ms": int(time.time()) * 10 ^ 6,
         "md5": "",
-        "metetype": "",  # TODO:xiedali@2024/03/20 meta??
+        "metetype": "",  # meta?? 估计剪映开发人员最初拼写错误，以后大家就将错就错了。
         "roughcut_time_range": {"duration": 0, "start": 0},
         "sub_time_range": {"duration": -1, "start": -1},
         "type": 0,

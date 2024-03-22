@@ -14,11 +14,13 @@ def generate_id():
 def write_json(path, data):
     with open(path, 'w') as file:
         json.dump(data, file)
+    pass
 
 
 def read_json(path):
     with open(path, 'r') as file:
         return json.load(file)
+    pass
 
 
 def create_folder(folder_path):
@@ -29,5 +31,8 @@ def create_folder(folder_path):
                 os.remove(file_path)
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
+            pass
+        pass
     else:
         os.mkdir(folder_path)
+    pass
