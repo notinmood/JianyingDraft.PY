@@ -14,7 +14,7 @@ class Tracks:
         self.audio_track = []
         self.text_track = []
 
-    def add_video_track(self, track_index=0):
+    def add_video_track(self, track_index=0) -> dict:
         """
         添加一条视频轨道
         当track_index超过现有轨道数时，则新建轨道，否则为选取轨道
@@ -25,13 +25,14 @@ class Tracks:
             dict: 返回轨道字典
         """
         track = self.gen_track(self.video_track, 'video', track_index)
+
         if track:
             self.video_track.append(track)
         pass
 
         return self.video_track[track_index]
 
-    def add_audio_track(self, track_index=0):
+    def add_audio_track(self, track_index=0) -> dict:
         track = self.gen_track(self.audio_track, 'audio', track_index)
         if track:
             # 当视频轨道为空时
@@ -80,7 +81,7 @@ class Tracks:
 
         return tracks
 
-    def gen_track(self, tracks, track_type, track_index):
+    def gen_track(self, tracks, track_type, track_index) -> dict:
         _self = self
 
         track_len = len(tracks)

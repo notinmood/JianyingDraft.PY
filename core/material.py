@@ -127,3 +127,35 @@ class Material:
         color1 = "<color=(1.000000, 1.000000, 1.000000, 1.000000)>"
         color2 = F'<color=({round(r / 255, 6):.6f}, {round(g / 255, 6):.6f}, {round(b / 255, 6):.6f}, 1.000000)>'
         self.content_material['content'] = self.content_material['content'].replace(color1, color2)
+
+    @staticmethod
+    def gen_basic_and_refs_info(material: "Material"):
+        """
+        生成material的基础信息和附加引用信息
+        """
+
+        basic_info = {}
+        extra_material_refs = []
+        if material.material_type == 'video':
+            basic_info['speeds'] = template.get_speed()
+            basic_info['sound_channel_mappings'] = template.get_sound_channel_mapping()
+            basic_info['canvases'] = template.get_canvas()
+        elif material.material_type == 'photo':
+            # TODO:xiedali@2024/03/23 需要通过在剪映内添加一个图片测试一下
+            pass
+        elif material.material_type == 'audio':
+            basic_info['speeds'] = template.get_speed()
+            basic_info['sound_channel_mappings'] = template.get_sound_channel_mapping()
+            basic_info['beats'] = template.get_sound_channel_mapping()
+        elif material.material_type == 'text':
+            basic_info['material_animations'] = template.get_material_animation()
+
+        basic_info[f'{material.track_type}s'] = material.content_material
+
+        for key in basic_info:
+            extra_material_refs.append(basic_info[key]['id'])
+        pass
+
+        return basic_info, extra_material_refs, material.content_material['id']
+
+    pass

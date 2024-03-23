@@ -82,51 +82,25 @@ class Draft:
     #         return self.materials[media]
     #     pass
 
-    def gen_material_property(self, material: Material):
-        _self = self
-
-        materials = {}
-        extra_material_refs = []
-        if material.material_type == 'video':
-            materials['speeds'] = template.get_speed()
-            materials['sound_channel_mappings'] = template.get_sound_channel_mapping()
-            materials['canvases'] = template.get_canvas()
-        elif material.material_type == 'photo':
-            pass
-        elif material.material_type == 'audio':
-            materials['speeds'] = template.get_speed()
-            materials['sound_channel_mappings'] = template.get_sound_channel_mapping()
-            materials['beats'] = template.get_sound_channel_mapping()
-        elif material.material_type == 'text':
-            materials['material_animations'] = template.get_material_animation()
-
-        materials[f'{material.track_type}s'] = material.content_material
-
-        for key in materials:
-            extra_material_refs.append(materials[key]['id'])
-        pass
-
-        return materials, extra_material_refs, material.content_material['id']
-
-    def add_media_to_track(self, media: str | Material, start=0, duration=0, index=0):
+    def add_material(self, material: str | Material, start=0, duration=0, index=0):
         if duration == 0:
-            duration = media.duration
+            duration = material.duration
         pass
 
         segment = template.get_segment()
         track = []
 
-        if isinstance(media, str):
-            media = Material(media)
+        if isinstance(material, str):
+            material = Material(material)
         pass
 
-        if media.material_type == 'video':
+        if material.material_type == 'video':
             track = self.tracks.add_video_track(index)
-        elif media.material_type == 'photo':
+        elif material.material_type == 'photo':
             track = self.tracks.add_video_track(index)
-        elif media.material_type == 'audio':
+        elif material.material_type == 'audio':
             track = self.tracks.add_audio_track(index)
-        elif media.material_type == 'text':
+        elif material.material_type == 'text':
             track = self.tracks.add_text_track(index)
 
         # 轨道总时长
@@ -134,19 +108,21 @@ class Draft:
         if len(track['segments']) != 0:
             last_segment = track['segments'][-1]
             last_segment_timerange = last_segment['target_timerange']
-            track_duration = last_segment_timerange['duration'] + last_segment_timerange['start']
+            track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
         pass
 
-        materials, extra_material_refs, material_id = self.gen_material_property(media)
-        for key in materials:
-            self.materials_in_draft_content[key].append(materials[key])
+        basic_info, extra_material_refs, material_id = Material.gen_basic_and_refs_info(material)
+
+        for key in basic_info:
+            self.materials_in_draft_content[key].append(basic_info[key])
+        pass
 
         segment['extra_material_refs'] = extra_material_refs
         segment['material_id'] = material_id
         segment['source_timerange'] = {"duration": duration, "start": start}
         segment['target_timerange'] = {"duration": duration, "start": track_duration}
 
-        self.tracks.add_segment(media.material_type, segment, index)
+        self.tracks.add_segment(material.material_type, segment, index)
 
     def save(self):
         """保存草稿"""
