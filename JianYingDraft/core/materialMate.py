@@ -3,7 +3,7 @@ import os
 from pymediainfo import MediaInfo
 
 
-class MaterialMisc:
+class MaterialMate:
     media_type_mapping = {
         "video": "video",
         "audio": "music",
@@ -129,7 +129,7 @@ class MaterialMisc:
         self.content_material['content'] = self.content_material['content'].replace(color1, color2)
 
     @staticmethod
-    def gen_basic_and_refs_info(material: "MaterialMisc"):
+    def gen_basic_and_refs_info(material: "MaterialMate"):
         """
         生成material的基础信息和附加引用信息
         """

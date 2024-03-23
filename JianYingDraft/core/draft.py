@@ -15,7 +15,7 @@ from BasicLibrary.data.dateTimeHelper import DateTimeHelper
 
 from JianYingDraft.utils import tools
 from JianYingDraft.core import template
-from JianYingDraft.core.materialMisc import MaterialMisc
+from JianYingDraft.core.materialMate import MaterialMate
 from JianYingDraft.core.tracks import Tracks
 
 
@@ -56,35 +56,30 @@ class Draft:
         self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root.split(':/')[0]
 
         # 创建变量
-        self.materials_in_draft_meta_info: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材库
-        self.materials_in_draft_content: list = self.draft_content_data['materials']  # 内容素材库
+        self.materials_in_draft_meta_info: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材元数据库
+        self.materials_in_draft_content: list = self.draft_content_data['materials']  # 草稿素材内容库
         self.tracks = Tracks()  # 轨道
         self.materials = {}
 
-    # def add_media_to_materials(self, media):
-    #     """
-    #     添加媒体信息到素材库：
-    #     1. 如果是文件路径先转化为DraftMaterial
-    #     2. 如果是DraftMaterial类直接添加到素材库
-    #     """
-    #     if isinstance(media, Material):
-    #         self.materials[media.file_Path] = media
-    #         self.materials_in_draft_meta_info.append(media.data)
-    #         return media
-    #     pass
-    #
-    #     if media not in self.materials:
-    #         m = Material(media)
-    #         self.materials[media] = m
-    #         self.materials_in_draft_meta_info.append(m.data)
-    #         return m
-    #     else:
-    #         return self.materials[media]
-    #     pass
-
-    def add_material(self, material: str | MaterialMisc, start=0, duration=0, index=0):
+    def add_material_to_meta_info(self, material):
+        """
+        添加媒体信息到素材库：
+        1. 如果是文件路径先转化为DraftMaterial
+        2. 如果是DraftMaterial类直接添加到素材库
+        """
         if isinstance(material, str):
-            material = MaterialMisc(material)
+            material = MaterialMate(material)
+        pass
+
+        if isinstance(material, MaterialMate):
+            if material not in self.materials:
+                self.materials_in_draft_meta_info.append(material.data)
+            pass
+        pass
+
+    def add_material(self, material: str | MaterialMate, start=0, duration=0, index=0):
+        if isinstance(material, str):
+            material = MaterialMate(material)
         pass
 
         if duration == 0:
@@ -111,7 +106,7 @@ class Draft:
             track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
         pass
 
-        basic_info, extra_material_refs, material_id = MaterialMisc.gen_basic_and_refs_info(material)
+        basic_info, extra_material_refs, material_id = MaterialMate.gen_basic_and_refs_info(material)
 
         for key in basic_info:
             self.materials_in_draft_content[key].append(basic_info[key])
@@ -124,9 +119,11 @@ class Draft:
 
         self.tracks.add_segment(material.material_type, segment, index)
 
+        self.add_material_to_meta_info(material)
+
     def save(self):
         """保存草稿"""
-        self.draft_content_data['tracks'] = self.tracks.composite()  # 覆盖轨道
+        self.draft_content_data['tracks'] = self.tracks.composite()  # 整合轨道
 
         # TODO:xiedali@2024/03/23 加入一个总时长的计算，并设置各处总时长字段duration
         tools.write_json(self.draft_content_path, self.draft_content_data)
