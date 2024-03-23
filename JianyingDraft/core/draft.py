@@ -11,17 +11,15 @@ import os
 import time
 
 from BasicLibrary.configHelper import ConfigHelper
+from BasicLibrary.projectHelper import ProjectHelper
 
-from core import util
-from core import template
-from core.material import Material
-from core.tracks import Tracks
+from JianyingDraft.utils import tools
+from JianyingDraft.core import template
+from JianyingDraft.core.materialMisc import MaterialMisc
+from JianyingDraft.core.tracks import Tracks
 
 
 class Draft:
-    drafts_root_folder = ConfigHelper.get_item("basic", "drafts_root_folder")
-
-    template_folder = "./template/"
     draft_content_file = "draft_content.json"
     draft_meta_info_file = "draft_meta_info.json"
 
@@ -31,29 +29,31 @@ class Draft:
             name = time.strftime("%Y%m%d.%H%M%S", time.localtime())
         pass
 
-        self.draft_folder = os.path.join(self.drafts_root_folder, name)
+        self.drafts_root = ConfigHelper.get_item("basic", "drafts_root")
+        self.draft_folder = os.path.join(self.drafts_root, name)
         self.draft_content_path = os.path.join(self.draft_folder, self.draft_content_file)
         self.draft_meta_info_path = os.path.join(self.draft_folder, self.draft_meta_info_file)
 
         # 新建项目文件夹
-        util.create_folder(self.draft_folder)
+        tools.create_folder(self.draft_folder)
 
         # 读取草稿模板
         here = os.path.abspath(os.path.dirname(__file__))
-        self.draft_content_data = util.read_json(os.path.join(here, self.template_folder, self.draft_content_file))
-        self.draft_meta_info_data = util.read_json(os.path.join(here, self.template_folder, self.draft_meta_info_file))
+        template_folder = os.path.join(os.path.dirname(here), "template")
+        self.draft_content_data = tools.read_json(os.path.join(template_folder, self.draft_content_file))
+        self.draft_meta_info_data = tools.read_json(os.path.join(template_folder, self.draft_meta_info_file))
 
         # 初始化草稿内容信息
-        self.draft_content_data['id'] = util.generate_id()
+        self.draft_content_data['id'] = tools.generate_id()
 
         # 初始化素材信息
-        self.draft_meta_info_data['id'] = util.generate_id()
+        self.draft_meta_info_data['id'] = tools.generate_id()
         self.draft_meta_info_data['draft_fold_path'] = self.draft_folder.replace("\\", '/')
         self.draft_meta_info_data['draft_timeline_metetyperials_size_'] = 0
         self.draft_meta_info_data['tm_draft_create'] = time.time()
         self.draft_meta_info_data['tm_draft_modified'] = time.time()
-        self.draft_meta_info_data['draft_root_path'] = self.drafts_root_folder.replace("/", "\\")
-        self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root_folder.split(':/')[0]
+        self.draft_meta_info_data['draft_root_path'] = self.drafts_root.replace("/", "\\")
+        self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root.split(':/')[0]
 
         # 创建变量
         self.materials_in_draft_meta_info: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材库
@@ -82,7 +82,7 @@ class Draft:
     #         return self.materials[media]
     #     pass
 
-    def add_material(self, material: str | Material, start=0, duration=0, index=0):
+    def add_material(self, material: str | MaterialMisc, start=0, duration=0, index=0):
         if duration == 0:
             duration = material.duration
         pass
@@ -91,7 +91,7 @@ class Draft:
         track = []
 
         if isinstance(material, str):
-            material = Material(material)
+            material = MaterialMisc(material)
         pass
 
         if material.material_type == 'video':
@@ -111,7 +111,7 @@ class Draft:
             track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
         pass
 
-        basic_info, extra_material_refs, material_id = Material.gen_basic_and_refs_info(material)
+        basic_info, extra_material_refs, material_id = MaterialMisc.gen_basic_and_refs_info(material)
 
         for key in basic_info:
             self.materials_in_draft_content[key].append(basic_info[key])
@@ -127,5 +127,5 @@ class Draft:
     def save(self):
         """保存草稿"""
         self.draft_content_data['tracks'] = self.tracks.composite()  # 覆盖轨道
-        util.write_json(self.draft_content_path, self.draft_content_data)
-        util.write_json(self.draft_meta_info_path, self.draft_meta_info_data)
+        tools.write_json(self.draft_content_path, self.draft_content_data)
+        tools.write_json(self.draft_meta_info_path, self.draft_meta_info_data)

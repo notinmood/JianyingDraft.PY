@@ -1,5 +1,5 @@
 import time
-from core import util
+from JianyingDraft.utils import tools
 
 
 def get_canvas():
@@ -7,7 +7,7 @@ def get_canvas():
         "album_image": "",
         "blur": 0.0,
         "color": "",
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "image": "",
         "image_id": "",
         "image_name": "",
@@ -20,7 +20,7 @@ def get_canvas():
 def get_sound_channel_mapping():
     return {
         "audio_channel_mapping": 0,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "is_config_open": False,
         "type": "none"
     }
@@ -29,7 +29,7 @@ def get_sound_channel_mapping():
 def get_speed():
     return {
         "curve_speed": None,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "mode": 0,
         "speed": 1.0,
         "type": "speed"
@@ -62,7 +62,7 @@ def get_video():
         "gameplay": None,
         "has_audio": True,
         "height": 0,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "intensifies_audio_path": "",
         "intensifies_path": "",
         "is_unified_beauty_mode": False,
@@ -111,7 +111,7 @@ def get_material():
         "extra_info": "",
         "file_Path": "",
         "height": 0,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "import_time": int(time.time()),
         "import_time_ms": int(time.time()) * 10 ^ 6,
         "md5": "",
@@ -127,7 +127,7 @@ def get_track():
     return {
         "attribute": 0,
         "flag": 0,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "segments": [],
         "type": ""
     }
@@ -153,7 +153,7 @@ def get_segment():
         ],
         "group_id": "",
         "hdr_settings": {"intensity": 1.0, "mode": 1, "nits": 1000},
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "intensifies_audio": False,
         "is_placeholder": False,
         "is_tone_modify": False,
@@ -185,7 +185,7 @@ def get_beat():
         },
         "enable_ai_beats": False,
         "gear": 404,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "mode": 404,
         "type": "beats",
         "user_beats": [],
@@ -202,10 +202,10 @@ def get_audio():
         "duration": 0,
         "effect_id": "",
         "formula_id": "",
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "intensifies_path": "",
         "local_material_id": "",
-        "music_id": util.generate_id(),
+        "music_id": tools.generate_id(),
         "name": "Krubb Wenkroist - Bleach.mp3",
         "path": "D:/Music/Krubb Wenkroist - Bleach.mp3",
         "request_id": "",
@@ -258,7 +258,7 @@ def get_text():
         "global_alpha": 1.0,
         "group_id": "",
         "has_shadow": False,
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "initial_scale": 1.0,
         "is_rich_text": False,
         "italic_degree": 0,
@@ -305,6 +305,6 @@ def get_text():
 def get_material_animation():
     return {
         "animations": [],
-        "id": util.generate_id(),
+        "id": tools.generate_id(),
         "type": "sticker_animation"
     }

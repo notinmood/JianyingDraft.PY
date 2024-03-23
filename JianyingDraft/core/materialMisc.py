@@ -1,9 +1,9 @@
-from core import template
+from JianyingDraft.core import template
 import os
 from pymediainfo import MediaInfo
 
 
-class Material:
+class MaterialMisc:
     media_type_mapping = {
         "video": "video",
         "audio": "music",
@@ -129,7 +129,7 @@ class Material:
         self.content_material['content'] = self.content_material['content'].replace(color1, color2)
 
     @staticmethod
-    def gen_basic_and_refs_info(material: "Material"):
+    def gen_basic_and_refs_info(material: "MaterialMisc"):
         """
         生成material的基础信息和附加引用信息
         """
