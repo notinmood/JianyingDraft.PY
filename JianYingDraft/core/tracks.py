@@ -1,4 +1,4 @@
-from JianyingDraft.core import template
+from JianYingDraft.core import template
 
 
 class Tracks:

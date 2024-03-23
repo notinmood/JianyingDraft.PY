@@ -3,6 +3,8 @@ import shutil
 import uuid
 import json
 
+from BasicLibrary.io.dirHelper import DirHelper
+
 
 def generate_id():
     """
@@ -28,7 +30,7 @@ def create_folder(folder_path):
         shutil.rmtree(folder_path)
     pass
 
-    os.mkdir(folder_path)
+    DirHelper.ensure_exist(folder_path)
 
 
 

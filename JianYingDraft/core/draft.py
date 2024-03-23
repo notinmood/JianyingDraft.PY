@@ -11,12 +11,12 @@ import os
 import time
 
 from BasicLibrary.configHelper import ConfigHelper
-from BasicLibrary.projectHelper import ProjectHelper
+from BasicLibrary.data.dateTimeHelper import DateTimeHelper
 
-from JianyingDraft.utils import tools
-from JianyingDraft.core import template
-from JianyingDraft.core.materialMisc import MaterialMisc
-from JianyingDraft.core.tracks import Tracks
+from JianYingDraft.utils import tools
+from JianYingDraft.core import template
+from JianYingDraft.core.materialMisc import MaterialMisc
+from JianYingDraft.core.tracks import Tracks
 
 
 class Draft:
@@ -29,7 +29,7 @@ class Draft:
             name = time.strftime("%Y%m%d.%H%M%S", time.localtime())
         pass
 
-        self.drafts_root = ConfigHelper.get_item("basic", "drafts_root")
+        self.drafts_root = ConfigHelper.get_item("JianYingDraft.basic", "drafts_root", "C:\\Jianying.Drafts")
         self.draft_folder = os.path.join(self.drafts_root, name)
         self.draft_content_path = os.path.join(self.draft_folder, self.draft_content_file)
         self.draft_meta_info_path = os.path.join(self.draft_folder, self.draft_meta_info_file)
@@ -50,8 +50,8 @@ class Draft:
         self.draft_meta_info_data['id'] = tools.generate_id()
         self.draft_meta_info_data['draft_fold_path'] = self.draft_folder.replace("\\", '/')
         self.draft_meta_info_data['draft_timeline_metetyperials_size_'] = 0
-        self.draft_meta_info_data['tm_draft_create'] = time.time()
-        self.draft_meta_info_data['tm_draft_modified'] = time.time()
+        self.draft_meta_info_data['tm_draft_create'] = DateTimeHelper.get_timestamp(formatter=16)
+        self.draft_meta_info_data['tm_draft_modified'] = DateTimeHelper.get_timestamp(formatter=16)
         self.draft_meta_info_data['draft_root_path'] = self.drafts_root.replace("/", "\\")
         self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root.split(':/')[0]
 
@@ -83,16 +83,16 @@ class Draft:
     #     pass
 
     def add_material(self, material: str | MaterialMisc, start=0, duration=0, index=0):
+        if isinstance(material, str):
+            material = MaterialMisc(material)
+        pass
+
         if duration == 0:
             duration = material.duration
         pass
 
         segment = template.get_segment()
         track = []
-
-        if isinstance(material, str):
-            material = MaterialMisc(material)
-        pass
 
         if material.material_type == 'video':
             track = self.tracks.add_video_track(index)
@@ -127,5 +127,7 @@ class Draft:
     def save(self):
         """保存草稿"""
         self.draft_content_data['tracks'] = self.tracks.composite()  # 覆盖轨道
+
+        # TODO:xiedali@2024/03/23 加入一个总时长的计算，并设置各处总时长字段duration
         tools.write_json(self.draft_content_path, self.draft_content_data)
         tools.write_json(self.draft_meta_info_path, self.draft_meta_info_data)

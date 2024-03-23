@@ -6,7 +6,7 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from JianyingDraft.core.material import Material
+from JianYingDraft.core.material import Material
 
 
 class MaterialVideo(Material):

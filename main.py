@@ -1,4 +1,4 @@
-from JianyingDraft.core.draft import Draft
+from JianYingDraft.core.draft import Draft
 
 if __name__ == '__main__':
     # # 新建项目
