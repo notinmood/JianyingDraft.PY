@@ -1,0 +1,18 @@
+[MASTER]
+# 添加要跳脱pylint检测的目录
+ignore=.test/*
+# ignore-patterns=**/3rd-part/**/*.py
+
+[MESSAGES CONTROL]
+# disable=all
+# enable=C0103
+
+disable =
+    non-ascii-file-name,
+    line-too-long,
+    invalid-name,
+    unnecessary-pass,
+    too-few-public-methods,
+    import-error,
+    too-many-public-methods,
+    fixme,# 取消掉todo等注释的提示

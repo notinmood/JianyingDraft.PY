@@ -9,10 +9,9 @@
 from JianYingDraft.core.material import Material
 
 
-class MaterialVideo(Material):
+class MaterialPhoto(Material):
     def __init__(self):
         super().__init__()
-        self.bar = "video"
 
     pass
 
