@@ -20,33 +20,28 @@ from JianYingDraft.core.tracks import Tracks
 
 
 class Draft:
-    draft_content_file = "draft_content.json"
-    draft_meta_info_file = "draft_meta_info.json"
+    draft_content_file_base_name = "draft_content.json"
+    draft_meta_info_file_base_name = "draft_meta_info.json"
 
     def __init__(self, name: str = ""):
-        # 路径变量
         if not name:
             name = time.strftime("%Y%m%d.%H%M%S", time.localtime())
         pass
 
+        # 草稿保存位置
         self.drafts_root = ConfigHelper.get_item("JianYingDraft.basic", "drafts_root", "C:\\Jianying.Drafts")
         self.draft_folder = os.path.join(self.drafts_root, name)
-        self.draft_content_path = os.path.join(self.draft_folder, self.draft_content_file)
-        self.draft_meta_info_path = os.path.join(self.draft_folder, self.draft_meta_info_file)
 
-        # 新建项目文件夹
-        tools.create_folder(self.draft_folder)
-
-        # 读取草稿模板
+        # 从模板获取草稿的基础数据
         here = os.path.abspath(os.path.dirname(__file__))
         template_folder = os.path.join(os.path.dirname(here), "template")
-        self.draft_content_data = tools.read_json(os.path.join(template_folder, self.draft_content_file))
-        self.draft_meta_info_data = tools.read_json(os.path.join(template_folder, self.draft_meta_info_file))
+        self.draft_content_data = tools.read_json(os.path.join(template_folder, self.draft_content_file_base_name))
+        self.draft_meta_info_data = tools.read_json(os.path.join(template_folder, self.draft_meta_info_file_base_name))
 
         # 初始化草稿内容信息
         self.draft_content_data['id'] = tools.generate_id()
 
-        # 初始化素材信息
+        # 初始化草稿元数据信息
         self.draft_meta_info_data['id'] = tools.generate_id()
         self.draft_meta_info_data['draft_fold_path'] = self.draft_folder.replace("\\", '/')
         self.draft_meta_info_data['draft_timeline_metetyperials_size_'] = 0
@@ -55,11 +50,13 @@ class Draft:
         self.draft_meta_info_data['draft_root_path'] = self.drafts_root.replace("/", "\\")
         self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root.split(':/')[0]
 
-        # 创建变量
+        # 为方便调用目标文件中的material部分，定义快捷变量
         self.materials_in_draft_meta_info: list = self.draft_meta_info_data['draft_materials'][0]['value']  # 草稿素材元数据库
         self.materials_in_draft_content: list = self.draft_content_data['materials']  # 草稿素材内容库
+
+        # 定义最重要的容器变量
         self.tracks = Tracks()  # 轨道
-        self.materials = {}
+        self.materials = {}  # 素材
 
     def add_material_to_meta_info(self, material):
         """
@@ -73,7 +70,7 @@ class Draft:
 
         if isinstance(material, MaterialMate):
             if material not in self.materials:
-                self.materials_in_draft_meta_info.append(material.data)
+                self.materials_in_draft_meta_info.append(material.data_for_meta_info)
             pass
         pass
 
@@ -122,9 +119,17 @@ class Draft:
         self.add_material_to_meta_info(material)
 
     def save(self):
-        """保存草稿"""
+        """
+        保存草稿
+        """
         self.draft_content_data['tracks'] = self.tracks.composite()  # 整合轨道
-
         # TODO:xiedali@2024/03/23 加入一个总时长的计算，并设置各处总时长字段duration
-        tools.write_json(self.draft_content_path, self.draft_content_data)
-        tools.write_json(self.draft_meta_info_path, self.draft_meta_info_data)
+
+        # 新建项目文件夹
+        tools.create_folder(self.draft_folder)
+
+        draft_content_file_full_name = os.path.join(self.draft_folder, self.draft_content_file_base_name)
+        draft_meta_info_file_full_name = os.path.join(self.draft_folder, self.draft_meta_info_file_base_name)
+
+        tools.write_json(draft_content_file_full_name, self.draft_content_data)
+        tools.write_json(draft_meta_info_file_full_name, self.draft_meta_info_data)

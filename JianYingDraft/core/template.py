@@ -104,7 +104,7 @@ def get_video():
     }
 
 
-def get_material():
+def get_material_for_meta_info():
     return {
         "create_time": int(time.time()),
         "duration": 0,
