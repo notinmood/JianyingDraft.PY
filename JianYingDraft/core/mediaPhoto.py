@@ -6,13 +6,12 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from JianYingDraft.core.material import Material
+from JianYingDraft.core.media import Media
 
 
-class MaterialVideo(Material):
+class MediaPhoto(Media):
     def __init__(self):
         super().__init__()
-        self.bar = "video"
 
     pass
 

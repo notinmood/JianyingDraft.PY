@@ -1,18 +1,18 @@
-from JianYingDraft.core.materialFactory import MaterialFactory
-from JianYingDraft.core.materialVideo import MaterialVideo
-from JianYingDraft.core.materialAudio import MaterialAudio
-from JianYingDraft.core.materialPhoto import MaterialPhoto
+from JianYingDraft.core.mediaFactory import MediaFactory
+from JianYingDraft.core.mediaVideo import MediaVideo
+from JianYingDraft.core.mediaAudio import MediaAudio
+from JianYingDraft.core.mediaPhoto import MediaPhoto
 
 
 def test_create():
-    actual = MaterialFactory.create("video")
-    assert isinstance(actual, MaterialVideo)
+    actual = MediaFactory.create("video")
+    assert isinstance(actual, MediaVideo)
 
-    actual = MaterialFactory.create("audio")
-    assert isinstance(actual, MaterialAudio)
+    actual = MediaFactory.create("audio")
+    assert isinstance(actual, MediaAudio)
 
-    actual = MaterialFactory.create("photo")
-    assert isinstance(actual, MaterialPhoto)
+    actual = MediaFactory.create("photo")
+    assert isinstance(actual, MediaPhoto)
 
 
 pass

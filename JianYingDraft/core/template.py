@@ -2,12 +2,16 @@ import time
 from JianYingDraft.utils import tools
 
 
-def get_canvas():
+def get_canvas(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "album_image": "",
         "blur": 0.0,
         "color": "",
-        "id": tools.generate_id(),
+        "id": guid,
         "image": "",
         "image_id": "",
         "image_name": "",
@@ -17,26 +21,148 @@ def get_canvas():
     }
 
 
-def get_sound_channel_mapping():
+def get_sound_channel_mapping(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "audio_channel_mapping": 0,
-        "id": tools.generate_id(),
+        "id": guid,
         "is_config_open": False,
         "type": "none"
     }
 
 
-def get_speed():
+def get_speed(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "curve_speed": None,
-        "id": tools.generate_id(),
+        "id": guid,
         "mode": 0,
         "speed": 1.0,
         "type": "speed"
     }
 
 
-def get_video():
+def get_material_for_meta_info(guid: str = None):
+    """
+    获取素材信息
+    :param guid: 素材id
+    :return:
+    """
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "create_time": int(time.time()),
+        "duration": 0,
+        "extra_info": "",
+        "file_Path": "",
+        "height": 0,
+        "id": guid,
+        "import_time": int(time.time()),
+        "import_time_ms": int(time.time()) * 10 ^ 6,
+        "md5": "",
+        "metetype": "",  # meta?? 估计剪映开发人员最初拼写错误，以后大家就将错就错了。
+        "roughcut_time_range": {"duration": 0, "start": 0},
+        "sub_time_range": {"duration": -1, "start": -1},
+        "type": 0,
+        "width": 0
+    }
+
+
+def get_track(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "attribute": 0,
+        "flag": 0,
+        "id": guid,
+        "segments": [],
+        "type": ""
+    }
+
+
+def get_segment(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "cartoon": False,
+        "clip": {
+            "alpha": 1.0,
+            "flip": {"horizontal": False, "vertical": False},
+            "rotation": 0.0,
+            "scale": {"x": 1.0, "y": 1.0},
+            "transform": {"x": 0.0, "y": 0.0}
+        },
+        "common_keyframes": [],
+        "enable_adjust": True,
+        "enable_color_curves": True,
+        "enable_color_wheels": True,
+        "enable_lut": True,
+        "enable_smart_color_adjust": False,
+        "extra_material_refs": [
+        ],
+        "group_id": "",
+        "hdr_settings": {"intensity": 1.0, "mode": 1, "nits": 1000},
+        "id": guid,
+        "intensifies_audio": False,
+        "is_placeholder": False,
+        "is_tone_modify": False,
+        "keyframe_refs": [],
+        "last_nonzero_volume": 1.0,
+        "material_id": "",
+        "render_index": 0,
+        "reverse": False,
+        "source_timerange": {"duration": 0, "start": 0},
+        "speed": 1.0,
+        "target_timerange": {"duration": 0, "start": 0},
+        "template_id": "",
+        "template_scene": "default",
+        "track_attribute": 0,
+        "track_render_index": 0,
+        "visible": True,
+        "volume": 1.0
+    }
+
+
+def get_beat(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "ai_beats": {
+            "beats_path": "",
+            "beats_url": "",
+            "melody_path": "",
+            "melody_percents": [0.0],
+            "melody_url": ""
+        },
+        "enable_ai_beats": False,
+        "gear": 404,
+        "id": guid,
+        "mode": 404,
+        "type": "beats",
+        "user_beats": [],
+        "user_delete_ai_beats": None
+    }
+
+
+def get_video(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "audio_fade": None,
         "cartoon_path": "",
@@ -62,7 +188,7 @@ def get_video():
         "gameplay": None,
         "has_audio": True,
         "height": 0,
-        "id": tools.generate_id(),
+        "id": guid,
         "intensifies_audio_path": "",
         "intensifies_path": "",
         "is_unified_beauty_mode": False,
@@ -104,96 +230,11 @@ def get_video():
     }
 
 
-def get_material_for_meta_info():
-    return {
-        "create_time": int(time.time()),
-        "duration": 0,
-        "extra_info": "",
-        "file_Path": "",
-        "height": 0,
-        "id": tools.generate_id(),
-        "import_time": int(time.time()),
-        "import_time_ms": int(time.time()) * 10 ^ 6,
-        "md5": "",
-        "metetype": "",  # meta?? 估计剪映开发人员最初拼写错误，以后大家就将错就错了。
-        "roughcut_time_range": {"duration": 0, "start": 0},
-        "sub_time_range": {"duration": -1, "start": -1},
-        "type": 0,
-        "width": 0
-    }
+def get_audio(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
 
-
-def get_track():
-    return {
-        "attribute": 0,
-        "flag": 0,
-        "id": tools.generate_id(),
-        "segments": [],
-        "type": ""
-    }
-
-
-def get_segment():
-    return {
-        "cartoon": False,
-        "clip": {
-            "alpha": 1.0,
-            "flip": {"horizontal": False, "vertical": False},
-            "rotation": 0.0,
-            "scale": {"x": 1.0, "y": 1.0},
-            "transform": {"x": 0.0, "y": 0.0}
-        },
-        "common_keyframes": [],
-        "enable_adjust": True,
-        "enable_color_curves": True,
-        "enable_color_wheels": True,
-        "enable_lut": True,
-        "enable_smart_color_adjust": False,
-        "extra_material_refs": [
-        ],
-        "group_id": "",
-        "hdr_settings": {"intensity": 1.0, "mode": 1, "nits": 1000},
-        "id": tools.generate_id(),
-        "intensifies_audio": False,
-        "is_placeholder": False,
-        "is_tone_modify": False,
-        "keyframe_refs": [],
-        "last_nonzero_volume": 1.0,
-        "material_id": "",
-        "render_index": 0,
-        "reverse": False,
-        "source_timerange": {"duration": 0, "start": 0},
-        "speed": 1.0,
-        "target_timerange": {"duration": 0, "start": 0},
-        "template_id": "",
-        "template_scene": "default",
-        "track_attribute": 0,
-        "track_render_index": 0,
-        "visible": True,
-        "volume": 1.0
-    }
-
-
-def get_beat():
-    return {
-        "ai_beats": {
-            "beats_path": "",
-            "beats_url": "",
-            "melody_path": "",
-            "melody_percents": [0.0],
-            "melody_url": ""
-        },
-        "enable_ai_beats": False,
-        "gear": 404,
-        "id": tools.generate_id(),
-        "mode": 404,
-        "type": "beats",
-        "user_beats": [],
-        "user_delete_ai_beats": None
-    }
-
-
-def get_audio():
     return {
         "app_id": 0,
         "category_id": "",
@@ -202,7 +243,7 @@ def get_audio():
         "duration": 0,
         "effect_id": "",
         "formula_id": "",
-        "id": tools.generate_id(),
+        "id": guid,
         "intensifies_path": "",
         "local_material_id": "",
         "music_id": tools.generate_id(),
@@ -225,7 +266,11 @@ def get_audio():
     }
 
 
-def get_text():
+def get_text(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "add_type": 0,
         "alignment": 1,
@@ -258,7 +303,7 @@ def get_text():
         "global_alpha": 1.0,
         "group_id": "",
         "has_shadow": False,
-        "id": tools.generate_id(),
+        "id": guid,
         "initial_scale": 1.0,
         "is_rich_text": False,
         "italic_degree": 0,
@@ -302,9 +347,13 @@ def get_text():
     }
 
 
-def get_material_animation():
+def get_material_animation(guid: str = None):
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
     return {
         "animations": [],
-        "id": tools.generate_id(),
+        "id": guid,
         "type": "sticker_animation"
     }

@@ -13,6 +13,7 @@ class MaterialMate:
     def __init__(self, file_full_name_or_text):
         self.data_for_meta_info = template.get_material_for_meta_info()
         self.data_for_content = {}
+
         self.material_type = ''
         self.track_type = ''
         self.width = 0

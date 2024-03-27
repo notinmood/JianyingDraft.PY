@@ -11,10 +11,10 @@ if __name__ == '__main__':
     draft = Draft()
 
     video_full_name = r"Z:\mm\my-video.mov"
-    draft.add_material(video_full_name, duration=3_000_000)
+    draft.add_media(video_full_name, duration=3_000_000)
 
     video_full_name = r"Z:\mm\人民日报金句摘抄｜20240215｜关于.mov"
-    draft.add_material(video_full_name, start=3_000_000, duration=3_000_000)
+    draft.add_media(video_full_name, start=3_000_000, duration=3_000_000)
 
     draft.save()
 

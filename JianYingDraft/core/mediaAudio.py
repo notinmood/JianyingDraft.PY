@@ -6,14 +6,19 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from JianYingDraft.core.material import Material
+from JianYingDraft.core.media import Media
 
 
-class MaterialPhoto(Material):
+# TODO:xiedali@2024/03/27 功能需要实现
+
+class MediaAudio(Media):
     def __init__(self):
         super().__init__()
 
     pass
+
+    def _set_material_data_for_content(self):
+        ...
 
 
 pass
