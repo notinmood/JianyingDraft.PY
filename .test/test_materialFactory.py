@@ -1,7 +1,7 @@
 from JianYingDraft.core.mediaFactory import MediaFactory
 from JianYingDraft.core.mediaVideo import MediaVideo
 from JianYingDraft.core.mediaAudio import MediaAudio
-from JianYingDraft.core.mediaPhoto import MediaPhoto
+from JianYingDraft.core.mediaImage import MediaPhoto
 
 
 def test_create():

@@ -7,6 +7,9 @@
  * @company: HiLand & RainyTop
 """
 from abc import abstractmethod
+
+from BasicLibrary.io.fileHelper import FileHelper
+
 from core import template
 from utils import tools
 from pymediainfo import MediaInfo
@@ -33,10 +36,14 @@ class Media:
     #   数组draft_materials的第0和第8个元素，value数组的每个元素记录media的基础属性
     # +--------------------------------------------------------------------------
 
-    media_type_mapping = {
+    media_material_type_mapping = {
         "video": "video",
         "audio": "music",
         "image": "photo",
+    }
+
+    media_category_type_mapping = {
+        "image": "video"
     }
 
     def __init__(self, **kwargs):
@@ -44,16 +51,20 @@ class Media:
         初始化
         :param kwargs:
         """
-
         # 10. 定义基础属性
         self.id = tools.generate_id()  # 在mete_info和content中都使用同一个guid
-        self.material_type = ''  #
-        self.track_type = ''  # TODO:xiedali@2024/03/25 material_type和track_type的区别是什么
+
+        self.media_type = ''  # 这是媒体文件真实的类型
+        self.material_type = ''  # 这是媒体添加到草稿里面，对应的素材类型（比如图片媒体文件image，对应的素材类型就是photo）
+        self.category_type = ''  # 这是媒体添加到草稿里面，素材所属类目（比如图片对应的类目就是Video）
+
         self.width = 0
         self.height = 0
         self.duration = 0
-        self.extra_info = ''
+
+        self.material_name = ''
         self.file_Path = ''
+        self.extra_info = ''
 
         # 20. 定义最后暴露给草稿文件的属性
         ## 20.1. 定义暴露给draft_meta_info文件的属性
@@ -73,17 +84,19 @@ class Media:
         self.segment_data_for_content = self.data_for_content["segment"]
 
         # 30. 加载各种资源的文件名称等信息
-        media_full_name = kwargs.get("media_full_name")
-        self.extra_info = media_full_name.split("/")[-1]
-        self.file_Path = media_full_name
+        media_file_full_name = kwargs.get("mediaFileFullName", "")
+        media_base_name_no_extension = FileHelper.get_base_name_no_extension(media_file_full_name)
+        self.extra_info = media_base_name_no_extension  # media_file_full_name.split("/")[-1]
+        self.material_name = media_base_name_no_extension
+        self.file_Path = media_file_full_name
 
         # 40. 加载各种媒体公共的信息
-        media_info = kwargs.get("media_info")
+        media_info = kwargs.get("mediaInfo")
         self._load_property_from_media(media_info)
 
         # 50. 加载素材的自定义设置
         duration = kwargs.get("duration", 0)
-        if not duration:
+        if duration:
             self.duration = duration
         pass
 
@@ -115,21 +128,17 @@ class Media:
         """
         设置草稿文件track中的segment部分
         """
-        # track = template.get_track()
-        # track['type'] = self.track_type
-        # self.track_data_for_content = track
-
         segment = template.get_segment()
         self.segment_data_for_content = segment
 
-        # 将本片段应该表示的素材类型，临时记录在“X.xx”内
-        segment['X.material_type'] = self.material_type
+        # # 将本片段应该表示的素材类型，临时记录在“X.xx”内
+        # segment['X.material_type'] = self.material_type
 
         segment['material_id'] = self.id
         segment['extra_material_refs'] = self.material_data_for_content["X.extra_material_refs"]
 
-        segment['source_timerange'] = {"duration": self.duration, "start": 0}
-        segment['target_timerange'] = {"duration": self.duration, "start": 0}  # TODO:xiedali@2024/03/27 什么意思
+        segment['source_timerange'] = {"duration": self.duration, "start": 0}  # 使用原素材的开始位置和使用时长信息（素材自己的时间）
+        segment['target_timerange'] = {"duration": self.duration, "start": 0}  # 放入轨道上的开始位置和使用时长信息（轨道上的时间）
 
     pass
 
@@ -148,9 +157,19 @@ class Media:
         """
         从媒体信息中加载素材信息
         """
+        self.media_type = media_info['track_type'].lower()
 
-        self.track_type = media_info['track_type'].lower()
-        self.material_type = self.media_type_mapping[self.track_type]
+        if self.media_type in self.media_material_type_mapping:
+            self.material_type = self.media_material_type_mapping[self.media_type]
+        else:
+            self.material_type = self.media_type
+        pass
+
+        if self.media_type in self.media_category_type_mapping:
+            self.category_type = self.media_category_type_mapping[self.media_type]
+        else:
+            self.category_type = self.media_type
+        pass
 
         if "width" in media_info:
             self.width = media_info['width']
@@ -160,70 +179,3 @@ class Media:
         if "duration" in media_info:
             self.duration = media_info['duration'] * 1000
         pass
-
-    # def gen_track(self, track_type) -> dict:
-    #     _self = self
-    #
-    #     track = template.get_track()
-    #     track['type'] = track_type
-    #
-    #     return track
-
-    def gen_audio(self):
-        a = template.get_audio()
-        a["duration"] = self.duration
-        a["local_material_id"] = self.id
-        a["name"] = self.extra_info
-        a["path"] = self.file_Path
-        a["type"] = "extract_" + self.material_type
-        return a
-
-    def gen_text(self):
-        _self = self
-        t = template.get_text()
-        return t
-
-    def change_color(self, color):
-        """
-        改变文字颜色
-        :param color: 以“#”开头后跟6位的颜色值
-        """
-        self.material_data_for_content['text_color'] = color
-        r = int(color[1:3], 16)
-        g = int(color[3:5], 16)
-        b = int(color[5:7], 16)
-        color1 = "<color=(1.000000, 1.000000, 1.000000, 1.000000)>"
-        color2 = F'<color=({round(r / 255, 6):.6f}, {round(g / 255, 6):.6f}, {round(b / 255, 6):.6f}, 1.000000)>'
-        self.material_data_for_content['content'] = self.material_data_for_content['content'].replace(color1, color2)
-
-    # @staticmethod
-    # def gen_basic_and_refs_info(material: "Media"):
-    #     """
-    #     生成material的基础信息和附加引用信息
-    #     """
-    #
-    #     basic_info = {}
-    #     extra_material_refs = []
-    #     if material.material_type == 'video':
-    #         basic_info['speeds'] = template.get_speed()
-    #         basic_info['sound_channel_mappings'] = template.get_sound_channel_mapping()
-    #         basic_info['canvases'] = template.get_canvas()
-    #     elif material.material_type == 'photo':
-    #         # TODO:xiedali@2024/03/23 需要通过在剪映内添加一个图片测试一下
-    #         pass
-    #     elif material.material_type == 'audio':
-    #         basic_info['speeds'] = template.get_speed()
-    #         basic_info['sound_channel_mappings'] = template.get_sound_channel_mapping()
-    #         basic_info['beats'] = template.get_sound_channel_mapping()
-    #     elif material.material_type == 'text':
-    #         basic_info['material_animations'] = template.get_material_animation()
-    #
-    #     basic_info[f'{material.track_type}s'] = material.data_for_content
-    #
-    #     for key in basic_info:
-    #         extra_material_refs.append(basic_info[key]['id'])
-    #     pass
-    #
-    #     return basic_info, extra_material_refs, material.data_for_content['id']
-    #
-    # pass

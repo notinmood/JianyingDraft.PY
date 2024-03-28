@@ -1,0 +1,140 @@
+{
+    "cloud_package_completed_time": "",
+    "draft_cloud_capcut_purchase_info": "",
+    "draft_cloud_last_action_download": false,
+    "draft_cloud_materials": [],
+    "draft_cloud_purchase_info": "",
+    "draft_cloud_template_id": "",
+    "draft_cloud_tutorial_info": "",
+    "draft_cloud_videocut_purchase_info": "",
+    "draft_cover": "draft_cover.jpg",
+    "draft_deeplink_url": "",
+    "draft_enterprise_info": {
+        "draft_enterprise_extra": "",
+        "draft_enterprise_id": "",
+        "draft_enterprise_name": "",
+        "enterprise_material": []
+    },
+    "draft_fold_path": "Z:/jianying/Data/JianyingPro Drafts/3月28日 (5)",
+    "draft_id": "8CF1217B-F054-4b65-9241-6C2A701EDAE3",
+    "draft_is_ai_packaging_used": false,
+    "draft_is_ai_shorts": false,
+    "draft_is_ai_translate": false,
+    "draft_is_article_video_draft": false,
+    "draft_is_from_deeplink": "false",
+    "draft_is_invisible": false,
+    "draft_materials": [
+        {
+            "type": 0,
+            "value": [
+                {
+                    "create_time": 1711378144,
+                    "duration": 5000000,
+                    "extra_info": "2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_3.jpg",
+                    "file_Path": "Z:/mm1/2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_3.jpg",
+                    "height": 1024,
+                    "id": "0df1ed0d-42e5-481b-8bc3-a7fd28146723",
+                    "import_time": 1711623836,
+                    "import_time_ms": 1711623835734406,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "photo",
+                    "roughcut_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 0,
+                    "width": 768
+                },
+                {
+                    "create_time": 1711378139,
+                    "duration": 5000000,
+                    "extra_info": "2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_2.jpg",
+                    "file_Path": "Z:/mm1/2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_2.jpg",
+                    "height": 1024,
+                    "id": "46d67e26-88b5-4a7b-a289-e9f313505c77",
+                    "import_time": 1711623837,
+                    "import_time_ms": 1711623835742259,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "photo",
+                    "roughcut_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 0,
+                    "width": 768
+                },
+                {
+                    "create_time": 1709693324,
+                    "duration": 16039000,
+                    "extra_info": "似是故人来.mp3",
+                    "file_Path": "Z:/mm1/似是故人来.mp3",
+                    "height": 0,
+                    "id": "ef97e5f0-f03a-4380-bdce-6c4c0395540d",
+                    "import_time": 1711623838,
+                    "import_time_ms": 1711623835744938,
+                    "item_source": 1,
+                    "md5": "",
+                    "metetype": "music",
+                    "roughcut_time_range": {
+                        "duration": 16039000,
+                        "start": 0
+                    },
+                    "sub_time_range": {
+                        "duration": -1,
+                        "start": -1
+                    },
+                    "type": 0,
+                    "width": 0
+                }
+            ]
+        },
+        {
+            "type": 1,
+            "value": []
+        },
+        {
+            "type": 2,
+            "value": []
+        },
+        {
+            "type": 3,
+            "value": []
+        },
+        {
+            "type": 6,
+            "value": []
+        },
+        {
+            "type": 7,
+            "value": []
+        },
+        {
+            "type": 8,
+            "value": []
+        }
+    ],
+    "draft_materials_copied_info": [],
+    "draft_name": "3月28日 (5)",
+    "draft_new_version": "",
+    "draft_removable_storage_device": "Z:",
+    "draft_root_path": "Z:\\jianying\\Data\\JianyingPro Drafts",
+    "draft_segment_extra_info": [],
+    "draft_timeline_materials_size_": 465319,
+    "draft_type": "",
+    "tm_draft_cloud_completed": "",
+    "tm_draft_cloud_modified": 0,
+    "tm_draft_create": 1711623817149844,
+    "tm_draft_modified": 1711623853908149,
+    "tm_draft_removed": 0,
+    "tm_duration": 16066666
+}

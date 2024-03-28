@@ -59,10 +59,6 @@ class Draft:
 
         self.tracks_in_draft_content: [] = self.draft_content_data['tracks']  # 草稿内容库的轨道
 
-        # # 定义最重要的容器变量
-        # self.tracks = []  # 本草稿使用的所有的轨道
-        # self.medias = []  # 本草稿使用的所有的媒体
-
     def add_media(self, media: str | Media, start=0, duration=0, index=0):
         """
         添加媒体到草稿
@@ -75,17 +71,17 @@ class Draft:
         pass
 
         # 将媒体信息添加到draft的素材库
-        self.add_media_to_content_materials(media)
+        self.__add_media_to_content_materials(media)
 
         # 将媒体信息添加到draft的轨道库
-        self.add_media_to_content_tracks(media)
+        self.__add_media_to_content_tracks(media)
 
         # 将媒体信息添加到draft的元数据库
-        self.add_media_to_meta_info(media)
+        self.__add_media_to_meta_info(media)
 
     pass
 
-    def add_media_to_content_materials(self, media: Media):
+    def __add_media_to_content_materials(self, media: Media):
         """
         添加媒体信息到素材内容库的素材部分：
         """
@@ -109,7 +105,7 @@ class Draft:
             self.materials_in_draft_content[_key].append(_value)
         pass
 
-    def add_media_to_content_tracks(self, media: Media):
+    def __add_media_to_content_tracks(self, media: Media):
         """
         添加媒体信息到素材内容库的轨道部分：
         """
@@ -125,7 +121,7 @@ class Draft:
         all_tracks = self.tracks_in_draft_content
         target_track = None
         for _track in all_tracks:
-            if _track["type"] == media.material_type:
+            if _track["type"] == media.category_type:
                 target_track = _track
                 break
             pass
@@ -133,7 +129,7 @@ class Draft:
 
         if target_track is None:
             target_track = template.get_track()
-            target_track["type"] = media.material_type
+            target_track["type"] = media.category_type
             all_tracks.append(target_track)
         pass
 
@@ -149,7 +145,7 @@ class Draft:
 
         target_track["segments"].append(media.segment_data_for_content)
 
-    def add_media_to_meta_info(self, media: Media):
+    def __add_media_to_meta_info(self, media: Media):
         """
         添加媒体信息到元数据库：
         """
@@ -162,7 +158,7 @@ class Draft:
         # pass
         # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
 
-        if media.material_type == "video":
+        if media.category_type == "video":
             self.videos_material_in_draft_meta_info.append(media.data_for_meta_info)
         else:
             self.audios_material_in_draft_meta_info.append(media.data_for_meta_info)
