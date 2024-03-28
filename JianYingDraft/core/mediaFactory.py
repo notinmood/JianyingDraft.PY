@@ -15,7 +15,7 @@ from pymediainfo import MediaInfo
 
 class MediaFactory:
     """
-    素材工厂
+    媒体工厂
     """
 
     @staticmethod
@@ -33,7 +33,7 @@ class MediaFactory:
         material_type = media_info['track_type'].lower()
 
         material_type = StringHelper.upper_first_char(material_type)
-        package_name = f"JianYingDraft.core.media{material_type}"
+        package_name = f"core.media{material_type}"
         class_name = f"Media{material_type}"
 
         kwargs["media_info"] = media_info

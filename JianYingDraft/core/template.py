@@ -1,5 +1,5 @@
 import time
-from JianYingDraft.utils import tools
+from utils import tools
 
 
 def get_canvas(guid: str = None):

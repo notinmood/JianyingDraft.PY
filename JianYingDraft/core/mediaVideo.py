@@ -6,7 +6,7 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from JianYingDraft.core.media import Media
+from core.media import Media
 from core import template
 from utils import tools
 
@@ -32,7 +32,7 @@ class MediaVideo(Media):
         self.material_data_for_content["sound_channel_mappings"] = template.get_sound_channel_mapping(scm_id)
         self.material_data_for_content["canvases"] = template.get_canvas(canvas_id)
 
-        self.material_data_for_content["video"] = self.gen_video()
+        self.material_data_for_content["videos"] = self.gen_video()
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [speed_id, scm_id, canvas_id]
 
@@ -46,15 +46,6 @@ class MediaVideo(Media):
         v["type"] = self.material_type
         v["width"] = self.width
         return v
-
-    # def apply_to_content(self, materials_of_content: {}):
-    #     """
-    #     将媒体信息应用到drft_content的materials节点内
-    #     :param materials_of_content: 文件drft_content的materials节点
-    #     """
-    #     ...
-    #
-    # pass
 
 
 pass

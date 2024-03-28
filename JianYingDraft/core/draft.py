@@ -13,10 +13,10 @@ import time
 from BasicLibrary.configHelper import ConfigHelper
 from BasicLibrary.data.dateTimeHelper import DateTimeHelper
 
-from JianYingDraft.utils import tools
-from JianYingDraft.core.tracks import Tracks
-from JianYingDraft.core.media import Media
-from JianYingDraft.core.mediaFactory import MediaFactory
+from utils import tools
+from core.media import Media
+from core.mediaFactory import MediaFactory
+from core import template
 
 
 class Draft:
@@ -51,20 +51,24 @@ class Draft:
         self.draft_meta_info_data['draft_removable_storage_device'] = self.drafts_root.split(':/')[0]
 
         # 为方便调用目标文件中的material部分，定义快捷变量
-        self.materials_in_draft_content: {} = self.draft_content_data['materials']  # 草稿素材内容库
+        self.materials_in_draft_content: {} = self.draft_content_data['materials']  # 草稿内容库的素材
 
-        self.materials_in_draft_meta_info: {} = self.draft_meta_info_data['draft_materials']  # 草稿素材元数据库
+        self.materials_in_draft_meta_info: {} = self.draft_meta_info_data['draft_materials']  # 草稿元数据库的素材
         self.videos_material_in_draft_meta_info = self.materials_in_draft_meta_info[0]['value']
-        self.audios_material_in_draft_meta_info = self.materials_in_draft_meta_info[8]['value']
+        self.audios_material_in_draft_meta_info = self.materials_in_draft_meta_info[6]['value']  # type为8的那条
 
-        # 定义最重要的容器变量
-        self.tracks = Tracks()  # 本草稿使用的所有的轨道
-        self.medias = []  # 本草稿使用的所有的媒体
+        self.tracks_in_draft_content: [] = self.draft_content_data['tracks']  # 草稿内容库的轨道
+
+        # # 定义最重要的容器变量
+        # self.tracks = []  # 本草稿使用的所有的轨道
+        # self.medias = []  # 本草稿使用的所有的媒体
 
     def add_media(self, media: str | Media, start=0, duration=0, index=0):
         """
         添加媒体到草稿
         """
+
+        # TODO:xiedali@2024/03/28 需要重新确认以下index的作用，其应该是表示轨道信息的时候使用，不需要向media传送
 
         if isinstance(media, str):
             media = MediaFactory.create(media, start=start, duration=duration, index=index)
@@ -74,113 +78,101 @@ class Draft:
         self.add_media_to_content_materials(media)
 
         # 将媒体信息添加到draft的轨道库
-        # TODO:xiedali@2024/03/27
-        ...
+        self.add_media_to_content_tracks(media)
 
         # 将媒体信息添加到draft的元数据库
         self.add_media_to_meta_info(media)
 
-        # if isinstance(material, str):
-        #     material = MaterialMate(material)
-        # pass
-
-        # if duration == 0:
-        #     duration = material.duration
-        # pass
-        #
-        # segment = template.get_segment()
-        # track = []
-        #
-        # if material.material_type == 'video':
-        #     track = self.tracks.add_video_track(index)
-        # elif material.material_type == 'photo':
-        #     track = self.tracks.add_video_track(index)
-        # elif material.material_type == 'audio':
-        #     track = self.tracks.add_audio_track(index)
-        # elif material.material_type == 'text':
-        #     track = self.tracks.add_text_track(index)
-        #
-        # # 轨道总时长
-        # track_duration = 0
-        # if len(track['segments']) != 0:
-        #     last_segment = track['segments'][-1]
-        #     last_segment_timerange = last_segment['target_timerange']
-        #     track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
-        # pass
-        #
-        # basic_info, extra_material_refs, material_id = MaterialMate.gen_basic_and_refs_info(material)
-        #
-        # for key in basic_info:
-        #     self.materials_in_draft_content[key].append(basic_info[key])
-        # pass
-        #
-        # segment['extra_material_refs'] = extra_material_refs
-        # segment['material_id'] = material_id
-        # segment['source_timerange'] = {"duration": duration, "start": start}
-        # segment['target_timerange'] = {"duration": duration, "start": track_duration}
-        #
-        # self.tracks.add_segment(material.material_type, segment, index)
-        #
-        # self.add_material_to_meta_info(material)
-
     pass
 
-    def add_media_to_content_materials(self, media: str | Media):
+    def add_media_to_content_materials(self, media: Media):
         """
-        添加媒体信息到元数据库：
-        1. 如果是文件路径先转化为Media
-        2. 如果是Media类直接添加到元数据库
+        添加媒体信息到素材内容库的素材部分：
         """
-        if isinstance(media, str):
-            media = MediaFactory.create(media)
+        if not isinstance(media, Media):
+            return
         pass
 
-        if isinstance(media, Media):
-            # if media not in self.materials:
-            #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
-            # pass
-            # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
+        # if media not in self.materials:
+        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
+        # pass
+        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
 
-            for _key, _value in media.material_data_for_content.items():
-                _key = str(_key)
+        for _key, _value in media.material_data_for_content.items():
+            _key = str(_key)
 
-                # 排出中转使用的临时信息
-                if _key.startswith("X."):
-                    continue
-                pass
+            # 排出中转使用的临时信息
+            if _key.startswith("X."):
+                continue
+            pass
 
-                self.materials_in_draft_content[_key].append(_value)
+            self.materials_in_draft_content[_key].append(_value)
+        pass
+
+    def add_media_to_content_tracks(self, media: Media):
+        """
+        添加媒体信息到素材内容库的轨道部分：
+        """
+        if not isinstance(media, Media):
+            return
+        pass
+
+        # if media not in self.materials:
+        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
+        # pass
+        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
+
+        all_tracks = self.tracks_in_draft_content
+        target_track = None
+        for _track in all_tracks:
+            if _track["type"] == media.material_type:
+                target_track = _track
+                break
             pass
         pass
 
-    def add_media_to_meta_info(self, media: str | Media):
-        """
-        添加媒体信息到元数据库：
-        1. 如果是文件路径先转化为Media
-        2. 如果是Media类直接添加到元数据库
-        """
-        if isinstance(media, str):
-            media = MediaFactory.create(media)
+        if target_track is None:
+            target_track = template.get_track()
+            target_track["type"] = media.material_type
+            all_tracks.append(target_track)
         pass
 
-        if isinstance(media, Media):
-            # if media not in self.materials:
-            #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
-            # pass
-            # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
+        # 轨道总时长
+        track_duration = 0
+        if len(target_track['segments']) != 0:
+            last_segment = target_track['segments'][-1]
+            last_segment_timerange = last_segment['target_timerange']
+            track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
+        pass
 
-            if media.material_type == "video":
-                self.videos_material_in_draft_meta_info.append(media.data_for_meta_info)
-            else:
-                self.audios_material_in_draft_meta_info.append(media.data_for_meta_info)
-            pass
+        ## TODO:xiedali@2024/03/28 设置新segment的duration等信息
+
+        target_track["segments"].append(media.segment_data_for_content)
+
+    def add_media_to_meta_info(self, media: Media):
+        """
+        添加媒体信息到元数据库：
+        """
+        if not isinstance(media, Media):
+            return
+        pass
+
+        # if media not in self.materials:
+        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
+        # pass
+        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
+
+        if media.material_type == "video":
+            self.videos_material_in_draft_meta_info.append(media.data_for_meta_info)
+        else:
+            self.audios_material_in_draft_meta_info.append(media.data_for_meta_info)
         pass
 
     def save(self):
         """
         保存草稿
         """
-        self.draft_content_data['tracks'] = self.tracks.composite()  # 整合轨道
+        # self.draft_content_data['tracks'] = self.tracks.composite()  # 整合轨道
         # TODO:xiedali@2024/03/23 加入一个总时长的计算，并设置各处总时长字段duration
 
         # 新建项目文件夹

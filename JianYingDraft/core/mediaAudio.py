@@ -6,7 +6,7 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from JianYingDraft.core.media import Media
+from core.media import Media
 
 
 # TODO:xiedali@2024/03/27 功能需要实现

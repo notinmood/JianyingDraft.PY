@@ -33,6 +33,12 @@ class Media:
     #   数组draft_materials的第0和第8个元素，value数组的每个元素记录media的基础属性
     # +--------------------------------------------------------------------------
 
+    media_type_mapping = {
+        "video": "video",
+        "audio": "music",
+        "image": "photo",
+    }
+
     def __init__(self, **kwargs):
         """
         初始化
@@ -115,6 +121,9 @@ class Media:
 
         segment = template.get_segment()
         self.segment_data_for_content = segment
+
+        # 将本片段应该表示的素材类型，临时记录在“X.xx”内
+        segment['X.material_type'] = self.material_type
 
         segment['material_id'] = self.id
         segment['extra_material_refs'] = self.material_data_for_content["X.extra_material_refs"]
