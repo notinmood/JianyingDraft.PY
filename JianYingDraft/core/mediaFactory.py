@@ -38,10 +38,6 @@ class MediaFactory:
         media_info = MediaInfo.parse(media_full_name).to_data()["tracks"][1]
         material_type = media_info['track_type'].lower()
 
-        # if material_type in MediaFactory.media_type_mapping:
-        #     material_type = MediaFactory.media_type_mapping[material_type]
-        # pass
-
         material_type = StringHelper.upper_first_char(material_type)
         package_name = f"core.media{material_type}"
         class_name = f"Media{material_type}"

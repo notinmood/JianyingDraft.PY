@@ -37,7 +37,6 @@ class Media:
     # +--------------------------------------------------------------------------
 
     media_material_type_mapping = {
-        "video": "video",
         "audio": "music",
         "image": "photo",
     }
