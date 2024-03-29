@@ -39,7 +39,7 @@ class MediaFactory:
         material_type = media_info['track_type'].lower()
 
         material_type = StringHelper.upper_first_char(material_type)
-        package_name = f"core.media{material_type}"
+        package_name = f"JianYingDraft.core.media{material_type}"
         class_name = f"Media{material_type}"
 
         kwargs["mediaInfo"] = media_info

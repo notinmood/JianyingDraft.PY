@@ -30,6 +30,7 @@ def write_json(path, data):
     :param data: 数据
     """
     with open(path, 'w') as file:
+        # 给json.dump添加参数 ensure_ascii=false可以保证汉字不被编码
         json.dump(data, file)
     pass
 

@@ -10,8 +10,8 @@ from abc import abstractmethod
 
 from BasicLibrary.io.fileHelper import FileHelper
 
-from core import template
-from utils import tools
+from JianYingDraft.core import template
+from JianYingDraft.utils import tools
 from pymediainfo import MediaInfo
 
 

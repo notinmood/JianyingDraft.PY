@@ -6,9 +6,9 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from core import template
-from core.media import Media
-from utils import tools
+from JianYingDraft.core import template
+from JianYingDraft.core.media import Media
+from JianYingDraft.utils import tools
 
 
 class MediaAudio(Media):

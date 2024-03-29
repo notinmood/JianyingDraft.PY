@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "JianYingDraft.PY"
-version = "0.1.4"
+version = "0.1.7"
 description = "帮助剪映快速生成草稿的方案"
 authors = ["解大劦 <develope@163.com>"]
 readme = "README.md"
@@ -12,6 +12,7 @@ license = "MIT"
 python = "^3.12"
 pymediainfo = "^6.1.0"
 basiclibrary-py = "^0.6.10"
+pytest = "^8.1.1"
 
 
 [tool.poetry.group.dev.dependencies]

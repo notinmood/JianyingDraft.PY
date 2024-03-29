@@ -19,7 +19,7 @@
 
 ## 本软件的实现原理说明
 
-1. `add_material` 会识别媒体类型，加入到对应轨道。
+1. `add_media` 会识别媒体类型，加入到对应轨道。
 2. 当没有视频轨道时，创建音频轨道会先创建视频轨道。
 
 ## 使用步骤与说明
@@ -28,4 +28,4 @@
    ```shell
    drafts_root=Z:/jianying/Data/JianyingPro Drafts
    ```
-2. 运行`main.py`
+2. 根据自己的需求修改`main.py`内的代码。运行`main.py`。

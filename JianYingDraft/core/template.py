@@ -1,5 +1,13 @@
+"""
+ * @file   : materialVideo.py
+ * @time   : 15:23
+ * @date   : 2024/3/23
+ * @mail   : 9727005@qq.com
+ * @creator: ShanDong Xiedali
+ * @company: HiLand & RainyTop
+"""
 import time
-from utils import tools
+from JianYingDraft.utils import tools
 
 
 def get_canvas(guid: str = None):

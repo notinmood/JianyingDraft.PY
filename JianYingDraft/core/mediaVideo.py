@@ -6,9 +6,9 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
-from core.media import Media
-from core import template
-from utils import tools
+from JianYingDraft.core.media import Media
+from JianYingDraft.core import template
+from JianYingDraft.utils import tools
 
 
 class MediaVideo(Media):

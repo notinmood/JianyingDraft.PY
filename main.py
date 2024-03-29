@@ -1,6 +1,4 @@
-from core.draft import Draft
-
-pass
+from JianYingDraft.core.draft import Draft
 
 
 def make_videos():

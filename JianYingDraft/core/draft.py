@@ -13,10 +13,10 @@ import time
 from BasicLibrary.configHelper import ConfigHelper
 from BasicLibrary.data.dateTimeHelper import DateTimeHelper
 
-from utils import tools
-from core.media import Media
-from core.mediaFactory import MediaFactory
-from core import template
+from JianYingDraft.utils import tools
+from JianYingDraft.core.media import Media
+from JianYingDraft.core.mediaFactory import MediaFactory
+from JianYingDraft.core import template
 
 
 class Draft:
@@ -143,6 +143,7 @@ class Draft:
         pass
 
         ## TODO:xiedali@2024/03/28 设置新segment的duration等信息
+        _duration = track_duration
 
         target_track["segments"].append(media.segment_data_for_content)
 
