@@ -1,3 +1,7 @@
+import os.path
+
+from BasicLibrary.projectHelper import ProjectHelper
+
 from JianYingDraft.core.draft import Draft
 
 
@@ -27,14 +31,18 @@ def make_text():
 
 
 def make_images():
-    draft = Draft()
-    image1_full_name = r"Z:\mm1\2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_3.jpg"
-    image2_full_name = r"Z:\mm1\2023_10_01_12_34_06_想知道学霸们疯狂摘抄的诗句有哪些_2.jpg"
+    draft = Draft("古诗词欣赏")
+    root_path = ProjectHelper.get_root_physical_path()
+    middle_path = ".res"
 
+    # 1. 添加两幅图片，分别设置不同的播放时间
+    image1_full_name = os.path.join(root_path, middle_path, "古诗1.jpg")
+    image2_full_name = os.path.join(root_path, middle_path, "古诗2.jpg")
     draft.add_media(image1_full_name, duration=5_000_000)
     draft.add_media(image2_full_name, duration=3_000_000)
 
-    music_full_name = r"Z:\mm1\似是故人来.mp3"
+    # 2. 添加背景音乐，音乐长度会根据视频的长度自动剪截
+    music_full_name = os.path.join(root_path, middle_path, "似是故人来.mp3")
     draft.add_media(music_full_name)
 
     draft.save()
