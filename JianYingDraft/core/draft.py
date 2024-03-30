@@ -60,16 +60,21 @@ class Draft:
 
         self._tracks_in_draft_content: [] = self._draft_content_data['tracks']  # 草稿内容库的轨道
 
-    def add_media(self, media: str | Media, start=0, duration=0, index=0):
+        # 存储本草稿用到的所有的媒体
+        self._all_medias = []
+
+    def add_media(self, media_file_full_name: str, start=0, duration=0, index=0):
         """
         添加媒体到草稿
         """
 
         # TODO:xiedali@2024/03/28 需要重新确认以下index的作用，其应该是表示轨道信息的时候使用，不需要向media传送
 
-        if isinstance(media, str):
-            media = MediaFactory.create(media, start=start, duration=duration, index=index)
-        pass
+        media = MediaFactory.create(media_file_full_name, start=start, duration=duration, index=index)
+
+        # TODO:xiedali@2024/03/30 需要确认逻辑，当添加同一个媒体文件进入草稿的时候，是否可以只添加一个material和多个trace的segment就可以。
+        # 将媒体存入媒体容器
+        self._all_medias.append(media)
 
         # 将媒体信息添加到draft的素材库
         self.__add_media_to_content_materials(media)
@@ -80,20 +85,26 @@ class Draft:
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
 
-    pass
+    def save(self):
+        """
+        保存草稿
+        """
+        # 校准时长信息
+        self.__calc_duration()
+
+        # 新建项目文件夹
+        tools.create_folder(self._draft_folder)
+
+        # 持久化草稿
+        draft_content_file_full_name = os.path.join(self._draft_folder, self._draft_content_file_base_name)
+        draft_meta_info_file_full_name = os.path.join(self._draft_folder, self._draft_meta_info_file_base_name)
+        tools.write_json(draft_content_file_full_name, self._draft_content_data)
+        tools.write_json(draft_meta_info_file_full_name, self._draft_meta_info_data)
 
     def __add_media_to_content_materials(self, media: Media):
         """
         添加媒体信息到素材内容库的素材部分：
         """
-        if not isinstance(media, Media):
-            return
-        pass
-
-        # if media not in self.materials:
-        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
-        # pass
-        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
 
         for _key, _value in media.material_data_for_content.items():
             _key = str(_key)
@@ -110,14 +121,6 @@ class Draft:
         """
         添加媒体信息到素材内容库的轨道部分：
         """
-        if not isinstance(media, Media):
-            return
-        pass
-
-        # if media not in self.materials:
-        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
-        # pass
-        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
 
         all_tracks = self._tracks_in_draft_content
         target_track = None
@@ -134,31 +137,18 @@ class Draft:
             self._tracks_in_draft_content.append(target_track)
         pass
 
-        # 轨道总时长
-        track_duration = 0
-        if len(target_track['segments']) != 0:
-            last_segment = target_track['segments'][-1]
-            last_segment_timerange = last_segment['target_timerange']
-            track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
-        pass
+        # 添加新片段之前轨道总时长
+        track_duration = self.__get_track_duration(media.category_type)
 
-        ## TODO:xiedali@2024/03/28 设置新segment的duration等信息
-        _duration = track_duration
-
+        # 设置新segment的在轨道上的开始时间
+        segment_source_timerange = media.segment_data_for_content["target_timerange"]
+        segment_source_timerange["start"] = track_duration
         target_track["segments"].append(media.segment_data_for_content)
 
     def __add_media_to_meta_info(self, media: Media):
         """
         添加媒体信息到元数据库：
         """
-        if not isinstance(media, Media):
-            return
-        pass
-
-        # if media not in self.materials:
-        #     self.materials_in_draft_meta_info.append(media.data_for_meta_info)
-        # pass
-        # TODO:xiedali@2024/03/27 是否需要检查媒体已经存在？
 
         if media.category_type == "video":
             self._videos_material_in_draft_meta_info.append(media.data_for_meta_info)
@@ -166,7 +156,7 @@ class Draft:
             self._audios_material_in_draft_meta_info.append(media.data_for_meta_info)
         pass
 
-    def calc_duration(self):
+    def __calc_duration(self):
         """
         计算并设置草稿的总时长
         计算策略为（以视频时长为基准，让其他地方的duration相对此时长对齐）：
@@ -174,25 +164,76 @@ class Draft:
         2. 将音频轨道的总时长设置为第一步计算的结果
         3. 设置草稿的总时长字段duration（文件content和meta_info都要设置）
         """
-        _self = self
+        # 1. 获取视频轨道的总时长
+        video_durations = self.__get_track_duration("video")
+        # 2. 设置音频轨道的总时长
+        # TODO:xiedali@2024/03/23 暂时只设置audio
+        self.__set_track_duration("audio", video_durations)
 
-        # TODO:xiedali@2024/03/23 加入一个总时长的计算，并设置各处总时长字段duration
-        ...
+        # 3. 设置草稿的总时长
+        self._draft_content_data['duration'] = video_durations
+        self._draft_meta_info_data['tm_duration'] = video_durations
 
-    pass
+    def __get_track_duration(self, track_type: str):
+        all_tracks = self._tracks_in_draft_content
+        target_track = None
+        for _track in all_tracks:
+            if _track["type"] == track_type:
+                target_track = _track
+                break
+            pass
+        pass
 
-    def save(self):
-        """
-        保存草稿
-        """
-        # 校准时长信息
-        self.calc_duration()
+        if not target_track:
+            return 0
+        pass
 
-        # 新建项目文件夹
-        tools.create_folder(self._draft_folder)
+        if len(target_track['segments']) == 0:
+            return 0
+        pass
 
-        draft_content_file_full_name = os.path.join(self._draft_folder, self._draft_content_file_base_name)
-        draft_meta_info_file_full_name = os.path.join(self._draft_folder, self._draft_meta_info_file_base_name)
+        # 轨道总时长
+        last_segment = target_track['segments'][-1]
+        last_segment_timerange = last_segment['target_timerange']
+        track_duration = last_segment_timerange['start'] + last_segment_timerange['duration']
+        return track_duration
 
-        tools.write_json(draft_content_file_full_name, self._draft_content_data)
-        tools.write_json(draft_meta_info_file_full_name, self._draft_meta_info_data)
+    def __set_track_duration(self, track_type: str, duration: int):
+        all_tracks = self._tracks_in_draft_content
+        target_track = None
+        for _track in all_tracks:
+            if _track["type"] == track_type:
+                target_track = _track
+                break
+            pass
+        pass
+
+        if not target_track:
+            return
+        pass
+
+        segments = target_track['segments']
+
+        done = False
+        for segment in segments:
+            ss_timerange = segment['source_timerange']
+            st_timerange = segment['target_timerange']
+
+            if done:
+                st_timerange['start'] = 0
+                st_timerange['duration'] = 0
+
+                ss_timerange['start'] = 0
+                ss_timerange['duration'] = 0
+            else:
+                segment_start = st_timerange['start']
+                segment_duration = st_timerange['duration']
+                segment_end = segment_start + segment_duration
+
+                if segment_end > duration:
+                    ss_timerange['duration'] = duration - segment_start
+                    st_timerange['duration'] = duration - segment_start
+                    done = True
+                pass
+            pass
+        pass
