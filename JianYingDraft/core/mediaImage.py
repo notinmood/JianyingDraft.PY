@@ -6,6 +6,8 @@
  * @creator: ShanDong Xiedali
  * @company: HiLand & RainyTop
 """
+from BasicLibrary.configHelper import ConfigHelper
+
 from JianYingDraft.core import template
 from JianYingDraft.core.media import Media
 from JianYingDraft.utils import tools
@@ -14,6 +16,16 @@ from JianYingDraft.utils import tools
 # TODO:xiedali@2024/03/27 功能需要实现
 
 class MediaImage(Media):
+
+    def _init_basic_info_after(self):
+        """
+        在初始化基础属性后加载逻辑（供派生类使用）
+        """
+        # duration = self.kwargs.get("duration", 0)
+        if self.duration == 0:
+            duration = ConfigHelper.get_item("JianYingDraft.image", "default_duration", 5000000)
+            self.duration = duration
+        pass
 
     def _set_material_data_for_content(self):
         speed_id = tools.generate_id()
@@ -38,4 +50,6 @@ class MediaImage(Media):
         entity["type"] = self.material_type
         entity["width"] = self.width
         return entity
+
+
 pass

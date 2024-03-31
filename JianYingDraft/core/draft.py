@@ -85,6 +85,12 @@ class Draft:
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
 
+    def calc_draft_duration(self):
+        """
+        获取（通过计算）草稿的时长
+        """
+        return self.__get_track_duration("video")
+
     def save(self):
         """
         保存草稿

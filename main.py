@@ -31,14 +31,16 @@ def make_text():
 
 
 def make_images():
-    draft = Draft("古诗词欣赏")
+    # 0. 可以给草稿指定名字，比如Draft("古诗词欣赏")；不指定名字的话，默认是根据时间戳自动生成名字
+    draft = Draft()
     root_path = ProjectHelper.get_root_physical_path()
     middle_path = ".res"
 
     # 1. 添加两幅图片，分别设置不同的播放时间
     image1_full_name = os.path.join(root_path, middle_path, "古诗1.jpg")
     image2_full_name = os.path.join(root_path, middle_path, "古诗2.jpg")
-    draft.add_media(image1_full_name, duration=5_000_000)
+
+    draft.add_media(image1_full_name)  # 图片如果不指定duration，默认播放5秒
     draft.add_media(image2_full_name, duration=3_000_000)
 
     # 2. 添加背景音乐，音乐长度会根据视频的长度自动剪截

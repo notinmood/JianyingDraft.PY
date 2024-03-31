@@ -47,10 +47,21 @@ class Media:
 
     def __init__(self, **kwargs):
         """
-        初始化
+        初始化数据
+        初始化数据分为两个阶段：
+        1. 初始化基础属性（media本身的属性，比如width等）
+        2. 初始化业务属性（media为组成草稿准备的属性，比如轨道的segment等）
+        针对这2个阶段，设置4个钩子，派生类可以根据情况调用：
+        1. _init_basic_info_before
+        2. _init_basic_info_after
+        3. _init_biz_info_before
+        4. _init_biz_info_after
         :param kwargs:
         """
-        # 10. 定义基础属性
+        # 00. 保存传递进来的kwargs，供后续灵活使用
+        self.kwargs = kwargs
+
+        # A.1. 定义基础属性
         self.id = tools.generate_id()  # 在mete_info和content中都使用同一个guid
 
         self.media_type = ''  # 这是媒体文件真实的类型
@@ -65,10 +76,36 @@ class Media:
         self.file_Path = ''
         self.extra_info = ''
 
-        # 20. 定义最后暴露给草稿文件的属性
-        ## 20.1. 定义暴露给draft_meta_info文件的属性
+        # A.2 初始化基础属性
+        ## A.2.00. 为初始化基础属性前加载逻辑
+        self._init_basic_info_before()
+
+        ## A.2.10. 加载各种资源的文件名称等基础信息
+        media_file_full_name = kwargs.get("mediaFileFullName", "")
+        media_base_name_no_extension = FileHelper.get_base_name_no_extension(media_file_full_name)
+        self.extra_info = media_base_name_no_extension  # media_file_full_name.split("/")[-1]
+        self.material_name = media_base_name_no_extension
+        self.file_Path = media_file_full_name
+
+        ## A.2.20. 加载各种媒体公共的信息
+        media_info = kwargs.get("mediaInfo")
+        self._load_property_from_media(media_info)
+
+        ## A.2.30. 加载媒体的自定义设置
+        duration = kwargs.get("duration", 0)
+        if duration:
+            self.duration = duration
+        pass
+
+        ## A.2.99. 为初始化基础属性后加载逻辑
+        self._init_basic_info_after()
+
+        # B.1. 定义业务属性（最后暴露给草稿文件使用）
+
+        ## B.1.10. 定义暴露给draft_meta_info文件的属性
         self.data_for_meta_info = template.get_material_for_meta_info(self.id)
-        ## 20.2. 定义暴露给draft_content文件的属性
+
+        ## B.1.20. 定义暴露给draft_content文件的属性
         ## 内部有各种属性分为两组，并分别为两个组设置别名：material_for_content,track_for_content
         # 第1组. material组（speed、sound_channel_mapping等，当然最重要的是video（或者audio））
         # 这些属性最后都会最成为materials各种数组属性的元素（比如此处的speed会保存为materials.speeds数组的一个元素：
@@ -82,31 +119,42 @@ class Media:
         self.material_data_for_content = self.data_for_content["material"]
         self.segment_data_for_content = self.data_for_content["segment"]
 
-        # 30. 加载各种资源的文件名称等信息
-        media_file_full_name = kwargs.get("mediaFileFullName", "")
-        media_base_name_no_extension = FileHelper.get_base_name_no_extension(media_file_full_name)
-        self.extra_info = media_base_name_no_extension  # media_file_full_name.split("/")[-1]
-        self.material_name = media_base_name_no_extension
-        self.file_Path = media_file_full_name
+        # B.2.00. 为初始化业务属性前加载逻辑
+        self._init_biz_info_before()
 
-        # 40. 加载各种媒体公共的信息
-        media_info = kwargs.get("mediaInfo")
-        self._load_property_from_media(media_info)
-
-        # 50. 加载素材的自定义设置
-        duration = kwargs.get("duration", 0)
-        if duration:
-            self.duration = duration
-        pass
-
-        # 60.1. 设置草稿文件的meta_info部分
+        ## B.2.10. 设置草稿文件的meta_info部分
         self.__set_data_for_meta_info()
 
-        # 60.2. 设置草稿文件的content部分
+        ## B.2.20. 设置草稿文件的content部分
         # 此部分功能在派生类中实现
         self.__set_data_for_content()
 
-    pass
+        ## B.2.99. 为初始化业务属性后加载逻辑
+        self._init_biz_info_after()
+
+    def _init_basic_info_before(self):
+        """
+        在初始化基础属性前加载逻辑（供派生类使用）
+        """
+        _self = self
+
+    def _init_basic_info_after(self):
+        """
+        在初始化基础属性后加载逻辑（供派生类使用）
+        """
+        _self = self
+
+    def _init_biz_info_before(self):
+        """
+        在初始化业务属性前加载逻辑（供派生类使用）
+        """
+        _self = self
+
+    def _init_biz_info_after(self):
+        """
+        在初始化业务属性后加载逻辑（供派生类使用）
+        """
+        _self = self
 
     def __set_data_for_content(self):
         """
