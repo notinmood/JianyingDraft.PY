@@ -365,3 +365,24 @@ def get_material_animation(guid: str = None):
         "id": guid,
         "type": "sticker_animation"
     }
+
+
+def get_audio_fade(guid: str = None, fade_in_duration: int = 0, fade_out_duration: int = 0):
+    """
+    添加音频的淡入淡出效果
+    @param guid:
+    @param fade_in_duration: 淡入时间（单位微秒）
+    @param fade_out_duration: 淡出时间（单位微秒）
+    @return:
+    """
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "fade_in_duration": fade_in_duration,
+        "fade_out_duration": fade_out_duration,
+        "fade_type": 0,
+        "id": guid,
+        "type": "audio_fade"
+    }

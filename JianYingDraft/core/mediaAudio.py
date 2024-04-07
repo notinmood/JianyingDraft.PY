@@ -26,6 +26,19 @@ class MediaAudio(Media):
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [speed_id, scm_id, beat_id]
 
+        fade_in_duration = self.kwargs.get("fade_in_duration", 0)
+        fade_out_duration = self.kwargs.get("fade_out_duration", 0)
+        if fade_in_duration > 0 or fade_out_duration > 0:
+            audio_fade_id = tools.generate_id()
+            self.material_data_for_content['audio_fades'] = template.get_audio_fade(
+                audio_fade_id,
+                fade_in_duration,
+                fade_out_duration
+            )
+
+            self.material_data_for_content["X.extra_material_refs"].append(audio_fade_id)
+        pass
+
     def __gen_audio(self):
         entity = template.get_audio(self.id)
         entity["duration"] = self.duration

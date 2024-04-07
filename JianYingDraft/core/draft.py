@@ -60,21 +60,17 @@ class Draft:
 
         self._tracks_in_draft_content: [] = self._draft_content_data['tracks']  # 草稿内容库的轨道
 
-        # 存储本草稿用到的所有的媒体
-        self._all_medias = []
-
-    def add_media(self, media_file_full_name: str, start=0, duration=0, index=0):
+    def add_media(self, media_file_full_name: str, start=0, duration=0, index=0, **kwargs):
         """
         添加媒体到草稿
         """
+        _index = index
 
-        # TODO:xiedali@2024/03/28 需要重新确认以下index的作用，其应该是表示轨道信息的时候使用，不需要向media传送
+        media = MediaFactory.create(media_file_full_name, start=start, duration=duration, **kwargs)
 
-        media = MediaFactory.create(media_file_full_name, start=start, duration=duration, index=index)
-
-        # TODO:xiedali@2024/03/30 需要确认逻辑，当添加同一个媒体文件进入草稿的时候，是否可以只添加一个material和多个trace的segment就可以。
-        # 将媒体存入媒体容器
-        self._all_medias.append(media)
+        if media is None:
+            return
+        pass
 
         # 将媒体信息添加到draft的素材库
         self.__add_media_to_content_materials(media)
@@ -84,6 +80,17 @@ class Draft:
 
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
+
+    def add_effect(self, effect_path: str, effect_name: str, start=0, duration=0, index=0):
+        """
+        添加特效到草稿
+        @param index:
+        @param duration:
+        @param start:
+        @param effect_path: 特效所在的路径（内置特效时请设置本参数为空；外置的特效时使用。）
+        @param effect_name: 特效的名称（内置特效总共有限的几个名称中的一个；外置特效的名称随意设定。）
+        """
+        pass
 
     def calc_draft_duration(self):
         """

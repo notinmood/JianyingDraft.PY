@@ -18,12 +18,6 @@ class MediaFactory:
     媒体工厂
     """
 
-    # media_type_mapping = {
-    #     # "video": "video",
-    #     # "audio": "audio",
-    #     # "image": "photo",
-    # }
-
     @staticmethod
     def create(media_full_name: str, **kwargs):
         """
