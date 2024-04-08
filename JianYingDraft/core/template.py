@@ -190,7 +190,7 @@ def get_video(guid: str = None):
         "crop_ratio": "free",
         "crop_scale": 1.0,
         "duration": 0,
-        "extra_type_option": 0,
+        "extra_type_option": 0,  # 是否播放视频素材的本身的背景音。0：播放；1：不播放
         "formula_id": "",
         "freeze": None,
         "gameplay": None,
