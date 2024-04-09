@@ -59,8 +59,8 @@ def make_images_with_effect():
         context.draft.add_media(image2_full_name)
 
         # 2. 添加特效
-        effect_name = "luoye" # TODO:xiedali@2024/04/09 再添加几种内置特效
-        context.draft.add_effect(effect_name, start=3_000_000, duration=5_000_000)
+        effect_name = "烟花"  # 内置的特效使用名称（各种内置特效请参考文档MediaEffect内）；也可以使用剪映本身的特效资源id（请使用int类型为id提供值）
+        context.draft.add_effect(effect_name, start=2_000_000, duration=5_000_000)
 
     pass
 

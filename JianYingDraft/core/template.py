@@ -388,12 +388,13 @@ def get_audio_fade(guid: str = None, fade_in_duration: int = 0, fade_out_duratio
     }
 
 
-def get_video_effect(guid: str = None, effect_name="", effect_path: str = ""):
+def get_video_effect(guid: str = None, resource_id: str = "", effect_name=""):
     """
     添加视频特效
+
     @param guid: 特效的id
     @param effect_name: 特效的名称
-    @param effect_path: 特效所在的文件夹路径
+    @param resource_id: 特效的资源在剪映的资源库中的id（非常重要，剪映通过这个id来自动获取特效的各种资源）
     @return:
     """
     if guid is None:
@@ -416,19 +417,19 @@ def get_video_effect(guid: str = None, effect_name="", effect_path: str = ""):
         "algorithm_artifact_path": "",
         "apply_target_type": 2,
         "apply_time_range": {"duration": 0, "start": 0},
-        "category_id": "39654",
+        "category_id": "1039448",
         "category_name": "热门",
         "common_keyframes": [],
         "disable_effect_faces": [],
-        "effect_id": "635043",
+        "effect_id": "1039448",
         "formula_id": "",
         "id": guid,
         "name": effect_name,
-        "path": effect_path,
+        "path": "",
         "platform": "all",
         "render_index": 0,
         "request_id": "",
-        "resource_id": "6740863535674298888",
+        "resource_id": resource_id,  # 特效的资源id（剪映通过这个id来自动获取特效的各种资源）
         "source_platform": 0,
         "time_range": {"duration": 0, "start": 0},
         "track_render_index": 0,

@@ -15,6 +15,39 @@ from JianYingDraft.core.media import Media
 
 
 class MediaEffect(Media):
+    @staticmethod
+    def get_effect_dict():
+        """
+        获取特效列表
+        """
+
+        effect_dict = {
+            "仙女棒": "7314565034586149403",
+            "烟雾": "6733145063997575694",
+            "星光绽放": "6760243564598268420",
+            "萤火": "7006265184050221576",
+            "镜头变焦": "6868546663607177736",
+            "星雨": "6766488666261950989",
+            "萤光飞舞": "6877098783209951751",
+
+            "星星灯": "6903072502369489422",
+            "烟花": "6782461740274684424",
+            "星夜": "7008149210159649294",
+            "星火": "6715209198109463054",
+            "萤光": "6715209844216828420",
+            "星河": "6734498838410695175",
+            "光斑飘落": "6899747276718084622",
+
+            "庆祝彩带": "6984685757508096520",
+            "泡泡": "6806254230614053383",
+            "星月童话": "6967255330958873124",
+            "彩带": "7012933493663470088",
+            "小花花": "6926823177670627848",
+            "蝴蝶": "6706773499836404228",
+            "落叶": "6740863535674298888",
+        }
+
+        return effect_dict
 
     def __init__(self, **kwargs):
         kwargs.setdefault("media_type", "effect")
@@ -45,15 +78,21 @@ class MediaEffect(Media):
         """
         设置草稿文件的content部分
         """
-        effect_path = self.kwargs.get("effect_path")
-        effect_name = self.kwargs.get("effect_name")
+        effect_name_or_resource_id = self.kwargs.get("effect_name_or_resource_id")
 
-        # 仅指定特效名称，不指定特效路径时，为内置特效
-        if not effect_path and effect_name:
-            effect_path = self.get_inner_effect_path(effect_name)
+        resource_id = "7012933493663470088"  # 缺省的特效资源ID表示小花花特效
+        effect_name = "小花花"
+        if isinstance(effect_name_or_resource_id, str):
+            effect_name = effect_name_or_resource_id
+            if effect_name in self.get_effect_dict():
+                resource_id = self.get_effect_dict()[effect_name]
+            pass
+        elif isinstance(effect_name_or_resource_id, int):
+            resource_id = str(effect_name_or_resource_id)
+            effect_name = resource_id
         pass
 
-        effect_data = template.get_video_effect(self.id, effect_name, effect_path)
+        effect_data = template.get_video_effect(self.id, resource_id, effect_name)
 
         self.material_data_for_content["video_effects"] = effect_data
 

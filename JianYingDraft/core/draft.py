@@ -60,6 +60,7 @@ class Draft:
         self._audios_material_in_draft_meta_info = self._materials_in_draft_meta_info[6]['value']  # type为8的那条
 
         self._tracks_in_draft_content: [] = self._draft_content_data['tracks']  # 草稿内容库的轨道
+        pass
 
     def add_media(self, media_file_full_name: str, start=0, duration=0, index=0, **kwargs):
         """
@@ -77,22 +78,24 @@ class Draft:
         self.__add_media_to_content_materials(media)
 
         # 将媒体信息添加到draft的轨道库
-        self.__add_media_to_content_tracks(media)
+        self.__add_media_to_content_tracks(media, start=start)
 
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
-        ...
+        pass
 
-    def add_effect(self, effect_name: str, effect_path: str = "", start=0, duration=0, index=0, **kwargs):
+    def add_effect(self, effect_name_or_resource_id: str | int, start=0, duration=0, index=0, **kwargs):
         """
         添加特效到草稿
         @param index:
         @param duration:
         @param start:
-        @param effect_path: 特效所在的路径（内置特效时请设置本参数为空；外置的特效时使用。）
-        @param effect_name: 特效的名称（内置特效总共有限的几个名称中的一个；外置特效的名称随意设定。）
+        @param effect_name_or_resource_id: 特效的名称或资源ID（内置特效可以使用名称；外置特效直接使用剪映的资源ID）
         """
-        media = MediaEffect(effect_name=effect_name, effect_path=effect_path, start=start, duration=duration, **kwargs)
+        _index = index
+
+        media = MediaEffect(effect_name_or_resource_id=effect_name_or_resource_id, start=start, duration=duration,
+                            **kwargs)
 
         # 将媒体信息添加到draft的素材库
         self.__add_media_to_content_materials(media)
@@ -100,9 +103,8 @@ class Draft:
         # 将媒体信息添加到draft的轨道库
         self.__add_media_to_content_tracks(media, start=start)
 
-        # # 将媒体信息添加到draft的元数据库
+        # # 效果的媒体信息不需要添加到draft的元数据库
         # self.__add_media_to_meta_info(media)
-        ...
 
     def calc_draft_duration(self):
         """
@@ -264,5 +266,3 @@ class Draft:
                 pass
             pass
         pass
-
-        ...
