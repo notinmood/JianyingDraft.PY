@@ -1,0 +1,13 @@
+{
+    "effect": {
+        "Link": [
+            {
+                "type": "AmazingFeature",
+                "zorder": 10000,
+                "path": "amazingfeature/"
+            }
+        ]
+    },
+    "name": "luo-ye",
+    "version": "6.6.0"
+}

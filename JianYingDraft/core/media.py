@@ -89,7 +89,8 @@ class Media:
 
         ## A.2.20. 加载各种媒体公共的信息
         media_info = kwargs.get("mediaInfo")
-        self._load_property_from_media(media_info)
+        self.__load_property_from_media_info(media_info)
+        self.__set_type_info()
 
         ## A.2.30. 加载媒体的自定义设置
         duration = kwargs.get("duration", 0)
@@ -200,11 +201,30 @@ class Media:
         self.data_for_meta_info['extra_info'] = self.extra_info
         self.data_for_meta_info['file_Path'] = self.file_Path
 
-    def _load_property_from_media(self, media_info: MediaInfo):
+    def __load_property_from_media_info(self, media_info: MediaInfo):
         """
         从媒体信息中加载素材信息
         """
+        if not media_info:
+            return
+        pass
+
         self.media_type = media_info['track_type'].lower()
+
+        if "width" in media_info:
+            self.width = media_info['width']
+            self.height = media_info['height']
+        pass
+
+        if "duration" in media_info:
+            self.duration = media_info['duration'] * 1000
+        pass
+
+    def __set_type_info(self):
+        _type = self.kwargs.get("media_type", "")
+        if _type:
+            self.media_type = _type
+        pass
 
         if self.media_type in self.media_material_type_mapping:
             self.material_type = self.media_material_type_mapping[self.media_type]
@@ -216,13 +236,4 @@ class Media:
             self.category_type = self.media_category_type_mapping[self.media_type]
         else:
             self.category_type = self.media_type
-        pass
-
-        if "width" in media_info:
-            self.width = media_info['width']
-            self.height = media_info['height']
-        pass
-
-        if "duration" in media_info:
-            self.duration = media_info['duration'] * 1000
         pass

@@ -76,7 +76,7 @@ def get_material_for_meta_info(guid: str = None):
         "import_time": int(time.time()),
         "import_time_ms": int(time.time()) * 10 ^ 6,
         "md5": "",
-        "metetype": "",  # meta?? 估计剪映开发人员最初拼写错误，以后大家就将错就错了。
+        "metetype": "",  # meta or mate?? 估计剪映开发人员最初拼写错误，以后大家就以讹传讹将错就错了。
         "roughcut_time_range": {"duration": 0, "start": 0},
         "sub_time_range": {"duration": -1, "start": -1},
         "type": 0,
@@ -84,17 +84,17 @@ def get_material_for_meta_info(guid: str = None):
     }
 
 
-def get_track(guid: str = None):
+def get_track(guid: str = None, track_type: str = ""):
     if guid is None:
         guid = tools.generate_id()
     pass
 
     return {
-        "attribute": 0,
+        "attribute": 0,  # 0表示正常；1表示关闭本轨道
         "flag": 0,
         "id": guid,
         "segments": [],
-        "type": ""
+        "type": track_type
     }
 
 
@@ -385,4 +385,54 @@ def get_audio_fade(guid: str = None, fade_in_duration: int = 0, fade_out_duratio
         "fade_type": 0,
         "id": guid,
         "type": "audio_fade"
+    }
+
+
+def get_video_effect(guid: str = None, effect_name="", effect_path: str = ""):
+    """
+    添加视频特效
+    @param guid: 特效的id
+    @param effect_name: 特效的名称
+    @param effect_path: 特效所在的文件夹路径
+    @return:
+    """
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "adjust_params": [
+            {
+                "default_value": 0.33,
+                "name": "effects_adjust_speed",
+                "value": 0.33
+            },
+            {
+                "default_value": 1.0,
+                "name": "effects_adjust_background_animation",
+                "value": 1.0
+            }
+        ],
+        "algorithm_artifact_path": "",
+        "apply_target_type": 2,
+        "apply_time_range": {"duration": 0, "start": 0},
+        "category_id": "39654",
+        "category_name": "热门",
+        "common_keyframes": [],
+        "disable_effect_faces": [],
+        "effect_id": "635043",
+        "formula_id": "",
+        "id": guid,
+        "name": effect_name,
+        "path": effect_path,
+        "platform": "all",
+        "render_index": 0,
+        "request_id": "",
+        "resource_id": "6740863535674298888",
+        "source_platform": 0,
+        "time_range": {"duration": 0, "start": 0},
+        "track_render_index": 0,
+        "type": "video_effect",
+        "value": 1.0,
+        "version": ""
     }

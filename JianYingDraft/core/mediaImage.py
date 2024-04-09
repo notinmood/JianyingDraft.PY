@@ -36,11 +36,11 @@ class MediaImage(Media):
         self.material_data_for_content["sound_channel_mappings"] = template.get_sound_channel_mapping(scm_id)
         self.material_data_for_content["canvases"] = template.get_canvas(canvas_id)
 
-        self.material_data_for_content["videos"] = self.__gen_photo()
+        self.material_data_for_content["videos"] = self.__generate_photo()
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [speed_id, scm_id, canvas_id]
 
-    def __gen_photo(self):
+    def __generate_photo(self):
         entity = template.get_video(self.id)
         entity["duration"] = self.duration
         entity["height"] = self.height

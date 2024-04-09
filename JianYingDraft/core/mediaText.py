@@ -22,11 +22,11 @@ class MediaText(Media):
 
         self.material_data_for_content['material_animations'] = template.get_speed(ma_id)
 
-        self.material_data_for_content["texts"] = self.__gen_text()
+        self.material_data_for_content["texts"] = self.__generate_text()
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [ma_id, ]
 
-    def __gen_text(self):
+    def __generate_text(self):
         _self = self
         entity = template.get_text(self.id)
         return entity

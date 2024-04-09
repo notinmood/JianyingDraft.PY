@@ -16,6 +16,7 @@ from BasicLibrary.data.dateTimeHelper import DateTimeHelper
 from JianYingDraft.utils import tools
 from JianYingDraft.core.media import Media
 from JianYingDraft.core.mediaFactory import MediaFactory
+from JianYingDraft.core.mediaEffect import MediaEffect
 from JianYingDraft.core import template
 
 
@@ -80,8 +81,9 @@ class Draft:
 
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
+        ...
 
-    def add_effect(self, effect_path: str, effect_name: str, start=0, duration=0, index=0):
+    def add_effect(self, effect_name: str, effect_path: str = "", start=0, duration=0, index=0, **kwargs):
         """
         添加特效到草稿
         @param index:
@@ -90,7 +92,17 @@ class Draft:
         @param effect_path: 特效所在的路径（内置特效时请设置本参数为空；外置的特效时使用。）
         @param effect_name: 特效的名称（内置特效总共有限的几个名称中的一个；外置特效的名称随意设定。）
         """
-        pass
+        media = MediaEffect(effect_name=effect_name, effect_path=effect_path, start=start, duration=duration, **kwargs)
+
+        # 将媒体信息添加到draft的素材库
+        self.__add_media_to_content_materials(media)
+
+        # 将媒体信息添加到draft的轨道库
+        self.__add_media_to_content_tracks(media, start=start)
+
+        # # 将媒体信息添加到draft的元数据库
+        # self.__add_media_to_meta_info(media)
+        ...
 
     def calc_draft_duration(self):
         """
@@ -130,7 +142,7 @@ class Draft:
             self._materials_in_draft_content[_key].append(_value)
         pass
 
-    def __add_media_to_content_tracks(self, media: Media):
+    def __add_media_to_content_tracks(self, media: Media, start=0):
         """
         添加媒体信息到素材内容库的轨道部分：
         """
@@ -150,12 +162,14 @@ class Draft:
             self._tracks_in_draft_content.append(target_track)
         pass
 
-        # 添加新片段之前轨道总时长
-        track_duration = self.__get_track_duration(media.category_type)
+        if not start:
+            # 添加新片段之前轨道总时长
+            start = self.__get_track_duration(media.category_type)
+        pass
 
         # 设置新segment的在轨道上的开始时间
         segment_source_timerange = media.segment_data_for_content["target_timerange"]
-        segment_source_timerange["start"] = track_duration
+        segment_source_timerange["start"] = start
         target_track["segments"].append(media.segment_data_for_content)
 
     def __add_media_to_meta_info(self, media: Media):
@@ -250,3 +264,5 @@ class Draft:
                 pass
             pass
         pass
+
+        ...
