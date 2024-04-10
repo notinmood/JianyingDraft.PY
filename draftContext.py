@@ -10,7 +10,7 @@ import os
 
 from BasicLibrary.projectHelper import ProjectHelper
 
-from core.draft import Draft
+from JianYingDraft.core.draft import Draft
 
 
 class DraftContext:

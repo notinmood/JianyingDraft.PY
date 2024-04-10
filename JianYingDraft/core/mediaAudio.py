@@ -22,7 +22,7 @@ class MediaAudio(Media):
         self.material_data_for_content['sound_channel_mappings'] = template.get_sound_channel_mapping(scm_id)
         self.material_data_for_content['beats'] = template.get_beat(beat_id)
 
-        self.material_data_for_content["audios"] = self.__generate_audio()
+        self.material_data_for_content["audios"] = self.__generate_main_data()
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [speed_id, scm_id, beat_id]
 
@@ -40,7 +40,7 @@ class MediaAudio(Media):
             self.material_data_for_content["X.extra_material_refs"].append(audio_fade_id)
         pass
 
-    def __generate_audio(self):
+    def __generate_main_data(self):
         entity = template.get_audio(self.id)
         entity["duration"] = self.duration
         entity["local_material_id"] = self.id

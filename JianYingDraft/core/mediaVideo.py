@@ -9,6 +9,7 @@
 from JianYingDraft.core.media import Media
 from JianYingDraft.core import template
 from JianYingDraft.utils import tools
+from JianYingDraft.utils.dataStruct import TransitionData
 
 
 class MediaVideo(Media):
@@ -25,7 +26,7 @@ class MediaVideo(Media):
         self.material_data_for_content["sound_channel_mappings"] = template.get_sound_channel_mapping(scm_id)
         self.material_data_for_content["canvases"] = template.get_canvas(canvas_id)
 
-        video_data = self.__generate_video()
+        video_data = self.__generate_main_data()
 
         # 判定是否要对视频素材本身的背景音进行静音处理
         bgm_mute = self.kwargs.get("bgm_mute", False)
@@ -40,7 +41,21 @@ class MediaVideo(Media):
         # 将素材的各种业务信息，暂时保存起来，后续供track下的segment使用
         self.material_data_for_content["X.extra_material_refs"] = [speed_id, scm_id, canvas_id]
 
-    def __generate_video(self):
+        # 处理转场效果
+        transition_data: TransitionData | None = self.kwargs.get("transition_data", None)
+        if transition_data:
+            transition_guid = tools.generate_id()
+            transition_data.guid = transition_guid
+            self.material_data_for_content["transitions"] = template.get_transition(
+                transition_data.guid,
+                transition_data.resource_id,
+                transition_data.name,
+                transition_data.duration
+            )
+            self.material_data_for_content["X.extra_material_refs"].append(transition_guid)
+        pass
+
+    def __generate_main_data(self):
         entity = template.get_video(self.id)
         entity["duration"] = self.duration
         entity["height"] = self.height

@@ -5,6 +5,9 @@ import json
 
 from BasicLibrary.io.dirHelper import DirHelper
 
+from JianYingDraft.utils.innerBizTypes import transitionDict, effectDict
+from JianYingDraft.utils.dataStruct import TransitionData, EffectData
+
 
 def generate_id() -> str:
     """
@@ -45,3 +48,56 @@ def create_folder(folder_path):
     pass
 
     DirHelper.ensure_exist(folder_path)
+
+
+def generate_effect_data(name_or_resource_id: str | int) -> EffectData:
+    """
+    生成转场数据
+    :param name_or_resource_id: 动画名称或资源id
+    """
+    resource_id = "7012933493663470088"  # 缺省的特效资源ID表示小花花特效
+    name = "小花花"
+
+    if isinstance(name_or_resource_id, str):
+        name = name_or_resource_id
+
+        if name in effectDict:
+            resource_id = effectDict[name]
+        pass
+    elif isinstance(name_or_resource_id, int):
+        resource_id = str(name_or_resource_id)
+        name = resource_id
+    pass
+
+    return EffectData(
+        guid=generate_id(),
+        resource_id=resource_id,
+        name=name
+    )
+
+
+def generate_transition_data(name_or_resource_id: str | int, duration=0) -> TransitionData:
+    """
+    生成转场数据
+    :param name_or_resource_id: 动画名称或资源id
+    :param duration: 持续时间
+    """
+    resource_id = "6724239388189921806"  # 缺省的转场资源ID表示闪黑
+    name = "闪黑"
+    if isinstance(name_or_resource_id, str):
+        name = name_or_resource_id
+
+        if name in transitionDict:
+            resource_id = transitionDict[name]
+        pass
+    elif isinstance(name_or_resource_id, int):
+        resource_id = str(name_or_resource_id)
+        name = resource_id
+    pass
+
+    return TransitionData(
+        guid=generate_id(),
+        resource_id=resource_id,
+        duration=duration,
+        name=name
+    )

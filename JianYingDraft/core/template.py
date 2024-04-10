@@ -388,13 +388,13 @@ def get_audio_fade(guid: str = None, fade_in_duration: int = 0, fade_out_duratio
     }
 
 
-def get_video_effect(guid: str = None, resource_id: str = "", effect_name=""):
+def get_video_effect(guid: str = None, resource_id: str = "", name=""):
     """
     添加视频特效
 
-    @param guid: 特效的id
-    @param effect_name: 特效的名称
-    @param resource_id: 特效的资源在剪映的资源库中的id（非常重要，剪映通过这个id来自动获取特效的各种资源）
+    @param guid: 特效的资源id
+    @param name: 特效的名称
+    @param resource_id: 特效资源在剪映的资源库中的id（非常重要，剪映通过这个id来自动获取特效的各种资源）
     @return:
     """
     if guid is None:
@@ -424,7 +424,7 @@ def get_video_effect(guid: str = None, resource_id: str = "", effect_name=""):
         "effect_id": "1039448",
         "formula_id": "",
         "id": guid,
-        "name": effect_name,
+        "name": name,
         "path": "",
         "platform": "all",
         "render_index": 0,
@@ -436,4 +436,34 @@ def get_video_effect(guid: str = None, resource_id: str = "", effect_name=""):
         "type": "video_effect",
         "value": 1.0,
         "version": ""
+    }
+
+
+def get_transition(guid: str = None, resource_id: str = "", name="", duration: int = 500_000):
+    """
+    添加视频特效
+
+    @param duration: 转场的持续时间（单位微秒）
+    @param guid: 转场的资源id
+    @param name: 转场的名称
+    @param resource_id: 转场资源在剪映的资源库中的id（非常重要，剪映通过这个id来自动获取转场的各种资源）
+    @return:
+    """
+    if guid is None:
+        guid = tools.generate_id()
+    pass
+
+    return {
+        "category_id": "39862",
+        "category_name": "叠化",
+        "duration": duration,
+        "effect_id": "321493",
+        "id": guid,
+        "is_overlap": False,
+        "name": name,
+        "path": "",
+        "platform": "all",
+        "request_id": "202404100726237F33ED27AE329CF48C4E",
+        "resource_id": resource_id,
+        "type": "transition"
     }
