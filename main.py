@@ -88,26 +88,27 @@ def make_images_with_animation():
 
         # 2. 添加转场
         animation_datas: list[AnimationData] = [
+            # tools.generate_animation_data(
+            #     name_or_resource_id="折叠开幕",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
+            #     start=0,  # 入场动画的起始时间永远为0（即便设置了其他起始时间，也会被忽略）。（这是一个相对素材片段的时间，不是时间轴上的绝对时间）
+            #     duration=1_200_000,  # 动画持续时间
+            #     animation_type="in",  # 动画类型
+            # ),
             tools.generate_animation_data(
-                name_or_resource_id="折叠开幕",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
-                start=0,  # 入场动画的起始时间永远为0（即便设置了其他起始时间，也会被忽略）。（这是一个相对素材片段的时间，不是时间轴上的绝对时间）
-                duration=1_200_000,  # 动画持续时间
-                animation_type="in",  # 动画类型
-            ), tools.generate_animation_data(
                 name_or_resource_id="渐隐",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
                 start=0,  # 出场动画的起始时间永远为0（具体的时间会根据素材片段的长度自动计算）。（这是一个相对素材片段的时间，不是时间轴上的绝对时间）
                 duration=1_000_000,  # 动画持续时间
                 animation_type="out",  # 动画类型
-            ), tools.generate_animation_data(
+            ),
+            tools.generate_animation_data(
                 name_or_resource_id="抖入放大",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
                 start=2_000_000,  # 动画开始时间
-                duration=2_200_000,  # 动画持续时间
+                duration=5_000_000,  # 动画持续时间
                 animation_type="group",  # 动画类型
             ),
         ]
 
-        context.draft.add_media(image1_full_name, animation_datas=animation_datas)
-        context.draft.add_media(image2_full_name, animation_datas=animation_datas)
+        context.draft.add_media(image1_full_name,duration=10_000_000, animation_datas=animation_datas)
 
     pass
 

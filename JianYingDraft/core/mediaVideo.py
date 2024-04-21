@@ -63,7 +63,7 @@ class MediaVideo(Media):
 
             for animation_data in animation_datas:
 
-                animation_start = 0
+                animation_start = animation_data.start
                 # 如果是入场动画，则动画的起始时间为0
                 if animation_data.animation_type == "in":
                     animation_start = 0

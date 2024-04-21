@@ -17,13 +17,22 @@ class ResourceData:
     """
     资源数据
     """
-    guid: str
-    name: str
-    resource_id: str
+    guid: str = ""
+    name: str = ""
+    resource_id: str = ""
 
 
 @dataclass
-class EffectData(ResourceData):
+class DurationResourceData(ResourceData):
+    """
+    延时资源数据
+    """
+    start: int = 0
+    duration: int = 0
+
+
+@dataclass
+class EffectData(DurationResourceData):
     """
     特效数据
     """
@@ -31,18 +40,17 @@ class EffectData(ResourceData):
 
 
 @dataclass
-class TransitionData(ResourceData):
+class TransitionData(DurationResourceData):
     """
     转场数据
     """
-    duration: int
+    pass
 
 
 @dataclass
-class AnimationData(ResourceData):
+class AnimationData(DurationResourceData):
     """
     动画数据
     """
-    animation_type: AnimationTypes
-    start: int
-    duration: int
+    animation_type: AnimationTypes = "in"
+
