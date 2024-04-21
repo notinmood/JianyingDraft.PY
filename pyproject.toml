@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "JianYingDraft.PY"
-version = "1.0.2"
+version = "1.0.3"
 description = "帮助剪映快速生成草稿的方案"
 authors = ["解大劦 <develope@163.com>"]
 readme = "README.md"

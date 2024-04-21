@@ -62,13 +62,27 @@ class MediaVideo(Media):
             material_animations = template.get_material_animation(animation_guid)
 
             for animation_data in animation_datas:
-                material_animations["animations"].append(template.get_detail_animation(
+
+                animation_start = 0
+                # 如果是入场动画，则动画的起始时间为0
+                if animation_data.animation_type == "in":
+                    animation_start = 0
+                pass
+
+                # 如果是出场动画，则动画的起始时间为素材的持续时间向前推动画时长duration
+                if animation_data.animation_type == "out":
+                    animation_start = self.duration - animation_data.duration
+                pass
+
+                animation_entity = template.get_detail_animation(
                     animation_data.resource_id,
                     animation_data.name,
                     animation_data.animation_type,
-                    animation_data.start,
+                    animation_start,
                     animation_data.duration,
-                ))
+                )
+
+                material_animations["animations"].append(animation_entity)
             pass
 
             self.material_data_for_content["material_animations"] = material_animations

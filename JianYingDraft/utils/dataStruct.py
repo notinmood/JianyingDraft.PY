@@ -9,11 +9,6 @@
 from dataclasses import dataclass
 from typing import Literal
 
-# class AnimationTypes(Enum):
-#     In = "in"
-#     Out = "out"
-#     Group = "Group"
-
 AnimationTypes = Literal["in", "out", "group"]
 
 
