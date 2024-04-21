@@ -7,10 +7,21 @@
  * @company: HiLand & RainyTop
 """
 from dataclasses import dataclass
+from typing import Literal
+
+# class AnimationTypes(Enum):
+#     In = "in"
+#     Out = "out"
+#     Group = "Group"
+
+AnimationTypes = Literal["in", "out", "group"]
 
 
 @dataclass
 class ResourceData:
+    """
+    资源数据
+    """
     guid: str
     name: str
     resource_id: str
@@ -18,9 +29,25 @@ class ResourceData:
 
 @dataclass
 class EffectData(ResourceData):
+    """
+    特效数据
+    """
     pass
 
 
 @dataclass
 class TransitionData(ResourceData):
+    """
+    转场数据
+    """
+    duration: int
+
+
+@dataclass
+class AnimationData(ResourceData):
+    """
+    动画数据
+    """
+    animation_type: AnimationTypes
+    start: int
     duration: int

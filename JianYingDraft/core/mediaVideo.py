@@ -9,7 +9,7 @@
 from JianYingDraft.core.media import Media
 from JianYingDraft.core import template
 from JianYingDraft.utils import tools
-from JianYingDraft.utils.dataStruct import TransitionData
+from JianYingDraft.utils.dataStruct import TransitionData, AnimationData
 
 
 class MediaVideo(Media):
@@ -53,6 +53,27 @@ class MediaVideo(Media):
                 transition_data.duration
             )
             self.material_data_for_content["X.extra_material_refs"].append(transition_guid)
+        pass
+
+        # 处理视频动画
+        animation_datas: list[AnimationData] | None = self.kwargs.get("animation_datas", None)
+        if animation_datas:
+            animation_guid = tools.generate_id()
+            material_animations = template.get_material_animation(animation_guid)
+
+            for animation_data in animation_datas:
+                material_animations["animations"].append(template.get_detail_animation(
+                    animation_data.resource_id,
+                    animation_data.name,
+                    animation_data.animation_type,
+                    animation_data.start,
+                    animation_data.duration,
+                ))
+            pass
+
+            self.material_data_for_content["material_animations"] = material_animations
+            self.material_data_for_content["X.extra_material_refs"].append(animation_guid)
+
         pass
 
     def __generate_main_data(self):

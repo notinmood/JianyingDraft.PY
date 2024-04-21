@@ -2,10 +2,10 @@ import os.path
 
 from BasicLibrary.projectHelper import ProjectHelper
 
-from draftContext import DraftContext
 from JianYingDraft.core.draft import Draft
-from JianYingDraft.utils.dataStruct import TransitionData
 from JianYingDraft.utils import tools
+from JianYingDraft.utils.dataStruct import TransitionData, AnimationData
+from draftContext import DraftContext
 
 
 def basic_using():
@@ -80,6 +80,38 @@ def make_images_with_transition():
     pass
 
 
+def make_images_with_animation():
+    with (DraftContext() as context):
+        # 1. 添加两幅图片
+        image1_full_name = os.path.join(context.res_path, "古诗1.jpg")
+        image2_full_name = os.path.join(context.res_path, "古诗2.jpg")
+
+        # 2. 添加转场
+        animation_datas: list[AnimationData] = [
+            tools.generate_animation_data(
+                name_or_resource_id="折叠开幕",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
+                start=0,  # 动画开始时间
+                duration=1_200_000,  # 动画持续时间
+                animation_type="in",  # 动画类型
+            ), tools.generate_animation_data(
+                name_or_resource_id="渐隐",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
+                start=4_000_000,  # 动画开始时间
+                duration=1_000_000,  # 动画持续时间
+                animation_type="out",  # 动画类型
+            ), tools.generate_animation_data(
+                name_or_resource_id="抖入放大",  # 动画名称（可以是内置的动画名称，也可以是剪映本身的动画资源id）
+                start=2_000_000,  # 动画开始时间
+                duration=1_200_000,  # 动画持续时间
+                animation_type="group",  # 动画类型
+            ),
+        ]
+
+        context.draft.add_media(image1_full_name, animation_datas=animation_datas)
+        context.draft.add_media(image2_full_name, animation_datas=animation_datas)
+
+    pass
+
+
 if __name__ == '__main__':
     ## 1. 最简方式（将图片做成视频）
     # basic_using()
@@ -91,4 +123,7 @@ if __name__ == '__main__':
     # make_images_with_effect()
 
     ## 4. 新建带有转场的图片素材
-    make_images_with_transition()
+    # make_images_with_transition()
+
+    ## 5. 新建带有入场出场动画的图片素材
+    make_images_with_animation()

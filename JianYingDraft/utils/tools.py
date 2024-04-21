@@ -5,8 +5,8 @@ import json
 
 from BasicLibrary.io.dirHelper import DirHelper
 
-from JianYingDraft.utils.innerBizTypes import transitionDict, effectDict
-from JianYingDraft.utils.dataStruct import TransitionData, EffectData
+from JianYingDraft.utils.innerBizTypes import *
+from JianYingDraft.utils.dataStruct import TransitionData, EffectData, AnimationData, AnimationTypes
 
 
 def generate_id() -> str:
@@ -99,5 +99,45 @@ def generate_transition_data(name_or_resource_id: str | int, duration=0) -> Tran
         guid=generate_id(),
         resource_id=resource_id,
         duration=duration,
+        name=name
+    )
+
+
+def generate_animation_data(name_or_resource_id: str | int, animation_type: AnimationTypes = "in", start=0,
+                            duration=0) -> AnimationData:
+    """
+    生成动画数据
+    :param animation_type: 动画类型 in/out/group
+    :param name_or_resource_id: 动画名称或资源id
+    :param start:
+    :param duration: 持续时间
+    """
+    resource_id = ""  # 缺省的动画资源ID
+    name = ""
+    if isinstance(name_or_resource_id, str):
+        name = name_or_resource_id
+
+        if animation_type == "in" and name in animationInDict:
+            resource_id = animationInDict[name]
+        pass
+
+        if animation_type == "out" and name in animationOutDict:
+            resource_id = animationOutDict[name]
+        pass
+
+        if animation_type == "group" and name in animationGroupDict:
+            resource_id = animationGroupDict[name]
+        pass
+    elif isinstance(name_or_resource_id, int):
+        resource_id = str(name_or_resource_id)
+        name = resource_id
+    pass
+
+    return AnimationData(
+        guid=generate_id(),
+        resource_id=resource_id,
+        duration=duration,
+        animation_type=animation_type,
+        start=start,
         name=name
     )

@@ -367,6 +367,26 @@ def get_material_animation(guid: str = None):
     }
 
 
+def get_detail_animation(resource_id: str = "", name="", animation_type: str = "in", start: int = 0,
+                         duration: int = 0, ):
+    return {
+        "resource_id": resource_id,
+        "type": animation_type,
+        "category_id": animation_type,
+        "category_name": animation_type,
+        "start": start,
+        "duration": duration,
+        "id": tools.generate_id(),  # 不会被其他地方引用，所以赋值一个随机id
+        "material_type": "video",
+        "name": name,
+        "panel": "video",
+        "path": "",
+        "platform": "all",
+        "request_id": "",
+        "anim_adjust_params": ""
+    }
+
+
 def get_audio_fade(guid: str = None, fade_in_duration: int = 0, fade_out_duration: int = 0):
     """
     添加音频的淡入淡出效果
