@@ -132,7 +132,6 @@ class Draft:
         """
         添加媒体信息到素材内容库的素材部分：
         """
-
         for _key, _value in media.material_data_for_content.items():
             _key = str(_key)
 
@@ -148,7 +147,6 @@ class Draft:
         """
         添加媒体信息到素材内容库的轨道部分：
         """
-
         all_tracks = self._tracks_in_draft_content
         target_track = None
         for _track in all_tracks:
