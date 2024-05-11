@@ -45,6 +45,13 @@ def make_videos():
     pass
 
 
+def make_video_with_speed():
+    with DraftContext() as context:
+        video1_full_name = os.path.join(context.res_path, "日报摘抄1.mov")
+        context.draft.add_media(video1_full_name, speed=1.5, bgm_mute=True, start=1_000_000)  # 给视频变速播放
+    pass
+
+
 def make_images_with_effect():
     with DraftContext() as context:
         # 1. 添加两幅图片
@@ -108,7 +115,7 @@ def make_images_with_animation():
             ),
         ]
 
-        context.draft.add_media(image1_full_name,duration=10_000_000, animation_datas=animation_datas)
+        context.draft.add_media(image1_full_name, duration=10_000_000, animation_datas=animation_datas)
 
     pass
 
@@ -117,8 +124,11 @@ if __name__ == '__main__':
     ## 1. 最简方式（将图片做成视频）
     # basic_using()
 
-    ## 2. 将既有视频进一步处理为新视频
+    ## 2.1 将既有视频进一步处理为新视频
     # make_videos()
+
+    ## 2.2 将既有视频进一步处理为新视频
+    make_video_with_speed()
 
     ## 3. 新建带有特效的图片素材
     # make_images_with_effect()
@@ -127,4 +137,4 @@ if __name__ == '__main__':
     # make_images_with_transition()
 
     ## 5. 新建带有入场出场动画的图片素材
-    make_images_with_animation()
+    # make_images_with_animation()

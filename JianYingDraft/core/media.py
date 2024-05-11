@@ -177,16 +177,20 @@ class Media:
         设置草稿文件track中的segment部分
         """
         segment = template.get_segment()
-        self.segment_data_for_content = segment
 
         # # 将本片段应该表示的素材类型，临时记录在“X.xx”内
         # segment['X.material_type'] = self.material_type
+
+        speed = self.kwargs.get("speed", 1.0)
+        segment['speed'] = speed  # 速度
 
         segment['material_id'] = self.id
         segment['extra_material_refs'] = self.material_data_for_content["X.extra_material_refs"]
 
         segment['source_timerange'] = {"duration": self.duration, "start": 0}  # 使用原素材的开始位置和使用时长信息（素材自己的时间）
-        segment['target_timerange'] = {"duration": self.duration, "start": 0}  # 放入轨道上的开始位置和使用时长信息（轨道上的时间）
+        segment['target_timerange'] = {"duration": self.duration / speed, "start": 0}  # 放入轨道上的开始位置和使用时长信息（轨道上的时间）
+
+        self.segment_data_for_content = segment
 
     pass
 

@@ -22,10 +22,13 @@ class MediaVideo(Media):
         scm_id = tools.generate_id()
         canvas_id = tools.generate_id()
 
-        self.material_data_for_content["speeds"] = template.get_speed(speed_id)
         self.material_data_for_content["sound_channel_mappings"] = template.get_sound_channel_mapping(scm_id)
         self.material_data_for_content["canvases"] = template.get_canvas(canvas_id)
 
+        speed_data = template.get_speed(speed_id)
+        speed = self.kwargs.get("speed", 1.0)
+        speed_data["speed"] = speed
+        self.material_data_for_content["speeds"] = speed_data
         video_data = self.__generate_main_data()
 
         # 判定是否要对视频素材本身的背景音进行静音处理
