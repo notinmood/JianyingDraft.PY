@@ -48,7 +48,14 @@ def make_videos():
 def make_video_with_speed():
     with DraftContext() as context:
         video1_full_name = os.path.join(context.res_path, "日报摘抄1.mov")
-        context.draft.add_media(video1_full_name, speed=1.5, bgm_mute=True, start=1_000_000)  # 给视频变速播放
+        context.draft.add_media(video1_full_name, speed=1.5, bgm_mute=True)  # 给视频变速播放
+    pass
+
+
+def make_video_with_cut():
+    with DraftContext() as context:
+        video_full_name = os.path.join(context.res_path, "计时数字.mp4")
+        context.draft.add_media(video_full_name, start_in_media=1_000_000)  # 给视频指定从第n秒开始播放
     pass
 
 
@@ -127,8 +134,11 @@ if __name__ == '__main__':
     ## 2.1 将既有视频进一步处理为新视频
     # make_videos()
 
-    ## 2.2 将既有视频进一步处理为新视频
-    make_video_with_speed()
+    ## 2.2 将既有视频进一步处理为新视频（变速播放）
+    # make_video_with_speed()
+
+    ## 2.3 将既有视频进一步处理为新视频（剪切开头部分）
+    make_video_with_cut()
 
     ## 3. 新建带有特效的图片素材
     # make_images_with_effect()

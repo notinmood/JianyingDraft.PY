@@ -183,11 +183,12 @@ class Media:
 
         speed = self.kwargs.get("speed", 1.0)
         segment['speed'] = speed  # 速度
+        start_in_media = self.kwargs.get("start_in_media", 0)
 
         segment['material_id'] = self.id
         segment['extra_material_refs'] = self.material_data_for_content["X.extra_material_refs"]
 
-        segment['source_timerange'] = {"duration": self.duration, "start": 0}  # 使用原素材的开始位置和使用时长信息（素材自己的时间）
+        segment['source_timerange'] = {"duration": self.duration, "start": start_in_media}  # 使用原素材的开始位置和使用时长信息（素材自己的时间）
         segment['target_timerange'] = {"duration": self.duration / speed, "start": 0}  # 放入轨道上的开始位置和使用时长信息（轨道上的时间）
 
         self.segment_data_for_content = segment
@@ -221,7 +222,10 @@ class Media:
         pass
 
         if "duration" in media_info:
-            self.duration = media_info['duration'] * 1000
+            _duration = media_info['duration'] * 1000
+            # 如果设置了截取时间start_in_media，那么duration需要减去start_in_media的时间
+            start_in_media = self.kwargs.get("start_in_media", 0)
+            self.duration = _duration - start_in_media
         pass
 
     def __set_type_info(self):

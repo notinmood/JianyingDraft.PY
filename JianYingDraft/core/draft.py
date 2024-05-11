@@ -62,13 +62,13 @@ class Draft:
         self._tracks_in_draft_content: [] = self._draft_content_data['tracks']  # 草稿内容库的轨道
         pass
 
-    def add_media(self, media_file_full_name: str, start=0, duration=0, index=0, **kwargs):
+    def add_media(self, media_file_full_name: str, start_at_track=0, duration=0, index=0, **kwargs):
         """
         添加媒体到草稿
         """
         _index = index
 
-        media = MediaFactory.create(media_file_full_name, start=start, duration=duration, **kwargs)
+        media = MediaFactory.create(media_file_full_name, duration=duration, **kwargs)
 
         if media is None:
             return
@@ -78,7 +78,7 @@ class Draft:
         self.__add_media_to_content_materials(media)
 
         # 将媒体信息添加到draft的轨道库
-        self.__add_media_to_content_tracks(media, start=start)
+        self.__add_media_to_content_tracks(media, start=start_at_track)
 
         # 将媒体信息添加到draft的元数据库
         self.__add_media_to_meta_info(media)
@@ -168,8 +168,8 @@ class Draft:
         pass
 
         # 设置新segment的在轨道上的开始时间
-        segment_source_timerange = media.segment_data_for_content["target_timerange"]
-        segment_source_timerange["start"] = start
+        segment_target_timerange = media.segment_data_for_content["target_timerange"]
+        segment_target_timerange["start"] = start
         target_track["segments"].append(media.segment_data_for_content)
 
     def __add_media_to_meta_info(self, media: Media):
