@@ -42,7 +42,8 @@ class Media:
     }
 
     media_category_type_mapping = {
-        "image": "video"
+        "image": "video",
+        "subtitle": "text"
     }
 
     def __init__(self, **kwargs):
