@@ -7,7 +7,7 @@
  * @company: HiLand & RainyTop
 """
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Tuple, List
 
 AnimationTypes = Literal["in", "out", "group"]
 
@@ -54,6 +54,29 @@ class AnimationData(DurationResourceData):
     """
     animation_type: AnimationTypes = "in"
 
+
+@dataclass
+class SubtitleStrokesData:
+    """
+    字幕描边数据
+    """
+    color: Tuple[float, float, float] = (0.0, 0.0, 0.0)
+    width: float = 0.8
+
+
+@dataclass
+class SubtitleFontData:
+    """
+    字幕字体数据
+    """
+    color: Tuple[float, float, float] = (1.0, 1.0, 1.0)
+    size: float = 8
+    strokes: SubtitleStrokesData = None
+
+    def get_strokes(self):
+        if self.strokes is None:
+            self.strokes = SubtitleStrokesData()
+        return self.strokes
 
 @dataclass
 class ColorData:
