@@ -150,3 +150,11 @@ animationGroupDict = {
     "旋转降落": "6759046515521491464",
     "三分割": "6873360856541827591"
 }
+
+# 背景填充
+backgroundFillDict = {
+    "模糊": {
+        "blur": 0.375,
+        "type": "canvas_blur"
+    }
+}
