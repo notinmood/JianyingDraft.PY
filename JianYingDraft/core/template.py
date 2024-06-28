@@ -8,8 +8,8 @@
 """
 import time
 from JianYingDraft.utils import tools
-from utils.dataStruct import SubtitleStrokesData, SubtitleFontData
-from utils.dataStruct import SubtitleFontData
+from JianYingDraft.utils.dataStruct import SubtitleStrokesData, SubtitleFontData
+from JianYingDraft.utils.dataStruct import SubtitleFontData
 
 
 def get_canvas(guid: str = None):

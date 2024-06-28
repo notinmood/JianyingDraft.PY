@@ -18,7 +18,7 @@ from JianYingDraft.core.media import Media
 from JianYingDraft.core.mediaFactory import MediaFactory
 from JianYingDraft.core.mediaEffect import MediaEffect
 from JianYingDraft.core import template
-from core.mediaSubtitle import MediaSubtitle
+from JianYingDraft.core.mediaSubtitle import MediaSubtitle
 
 
 class Draft:
