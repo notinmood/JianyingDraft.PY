@@ -11,9 +11,8 @@ import json
 from JianYingDraft.core import template
 from JianYingDraft.core.media import Media
 from JianYingDraft.utils import tools
-import pysrt
-
-from utils.dataStruct import SubtitleStrokesData, SubtitleFontData
+from JianYingDraft.utils.dataStruct import SubtitleFontData
+from JianYingDraft.utils.jsonCustionEncoder import JsonCustomEncoder
 
 
 def RGB_to_Hex(tmp: list):
@@ -50,7 +49,7 @@ class MediaSubtitle(Media):
 
         content = template.get_subtitle_content(self.kwargs.get("info").text, font_info=font_info)
 
-        entity["content"] = json.dumps(content)
+        entity["content"] = json.dumps(content, cls=JsonCustomEncoder)
         return entity
 
 
