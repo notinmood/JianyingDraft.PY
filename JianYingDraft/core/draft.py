@@ -18,6 +18,7 @@ from JianYingDraft.core.media import Media
 from JianYingDraft.core.mediaFactory import MediaFactory
 from JianYingDraft.core.mediaEffect import MediaEffect
 from JianYingDraft.core import template
+from JianYingDraft.core.mediaSubtitle import MediaSubtitle
 
 
 class Draft:
@@ -106,6 +107,30 @@ class Draft:
         # # 效果的媒体信息不需要添加到draft的元数据库
         # self.__add_media_to_meta_info(media)
 
+    def addSrt(self, srt_file_full_name: str | int, index=0, **kwargs):
+        """
+        添加字幕到草稿
+        """
+        _index = index
+
+        import pysrt
+
+        srt_info = pysrt.open(srt_file_full_name)
+
+        for data in srt_info.data:
+            duration = data.duration.ordinal * 1000
+            srt = MediaSubtitle(info=data, duration=duration, **kwargs)
+
+            # 将媒体信息添加到draft的素材库
+            self.__add_srt_to_content_materials(srt)
+
+            # 将媒体信息添加到draft的轨道库
+            self.__add_srt_to_content_tracks(srt, start=data.start.ordinal * 1000)
+
+            # 将媒体信息添加到draft的元数据库
+            # self.__add_srt_to_meta_info(media)
+        pass
+
     def calc_draft_duration(self):
         """
         获取（通过计算）草稿的时长
@@ -172,6 +197,8 @@ class Draft:
         segment_target_timerange["start"] = start
         target_track["segments"].append(media.segment_data_for_content)
 
+
+
     def __add_media_to_meta_info(self, media: Media):
         """
         添加媒体信息到元数据库：
@@ -182,6 +209,50 @@ class Draft:
         else:
             self._audios_material_in_draft_meta_info.append(media.data_for_meta_info)
         pass
+
+    def __add_srt_to_content_materials(self, srt: Media):
+        """
+        添加媒体信息到素材内容库的素材部分：
+        """
+        for _key, _value in srt.material_data_for_content.items():
+            _key = str(_key)
+
+            # 排除中转使用的临时信息
+            if _key.startswith("X."):
+                continue
+            pass
+
+            self._materials_in_draft_content[_key].append(_value)
+        pass
+
+    def __add_srt_to_content_tracks(self, srt: Media, start=0):
+        """
+        添加媒体信息到素材内容库的轨道部分：
+        """
+        all_tracks = self._tracks_in_draft_content
+        target_track = None
+        for _track in all_tracks:
+            if _track["type"] == srt.category_type:
+                target_track = _track
+                break
+            pass
+        pass
+
+        if target_track is None:
+            target_track = template.get_track()
+            target_track["type"] = srt.category_type
+            self._tracks_in_draft_content.append(target_track)
+        pass
+
+        if not start:
+            # 添加新片段之前轨道总时长
+            start = self.__get_track_duration(srt.category_type)
+        pass
+
+        # 设置新segment的在轨道上的开始时间
+        segment_target_timerange = srt.segment_data_for_content["target_timerange"]
+        segment_target_timerange["start"] = start
+        target_track["segments"].append(srt.segment_data_for_content)
 
     def __calc_duration(self):
         """
