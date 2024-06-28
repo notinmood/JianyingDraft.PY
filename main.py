@@ -4,7 +4,7 @@ from BasicLibrary.projectHelper import ProjectHelper
 
 from JianYingDraft.core.draft import Draft
 from JianYingDraft.utils import tools
-from JianYingDraft.utils.dataStruct import TransitionData, AnimationData, SubtitleFontData, ColorData
+from JianYingDraft.utils.dataStruct import TransitionData, AnimationData
 from draftContext import DraftContext
 
 
