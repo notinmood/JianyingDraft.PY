@@ -10,7 +10,7 @@ from JianYingDraft.core.media import Media
 from JianYingDraft.core import template
 from JianYingDraft.utils import tools
 from JianYingDraft.utils.dataStruct import TransitionData, AnimationData
-
+from JianYingDraft.utils.innerBizTypes import backgroundFillDict
 
 class MediaVideo(Media):
 
@@ -92,6 +92,13 @@ class MediaVideo(Media):
             self.material_data_for_content["X.extra_material_refs"].append(animation_guid)
 
         pass
+
+        background_fill_type = self.kwargs.get("background_fill_type")
+        if background_fill_type:
+            if background_fill_type == "模糊":
+                canvas_dict: dict = backgroundFillDict[background_fill_type]
+                for key, value in canvas_dict.items():
+                    self.material_data_for_content["canvases"][key] = value
 
     def __generate_main_data(self):
         entity = template.get_video(self.id)
